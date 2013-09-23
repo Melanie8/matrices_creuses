@@ -6,10 +6,11 @@ Répartition
 
 - manipulation de matrice
 	- structure
-		- leader avec la taille (+ nombre de noeuds)
+		- header avec la taille (+ nombre de noeuds)
 		- noeuds (noeuds (position xy, lien droite, lien bas))
 		- liste perpendiculairement chaînée
+		- ou alors RSC/RCS ?
 	- opérations dessus (multiplication)
 	=> à clarifier
 
-RCV mercredi à 14h
+RDV mercredi à 14h
