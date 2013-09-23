@@ -1,0 +1,15 @@
+Répartition
+
+- main:
+	- getopt
+	- ouverture de fichier
+
+- manipulation de matrice
+	- structure
+		- leader avec la taille (+ nombre de noeuds)
+		- noeuds (noeuds (position xy, lien droite, lien bas))
+		- liste perpendiculairement chaînée
+	- opérations dessus (multiplication)
+	=> à clarifier
+
+RCV mercredi à 14h
