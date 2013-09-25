@@ -9,6 +9,7 @@
 #include <pthread.h>
 #include <semaphore.h>
 #include "smatrix.h"
+#include "queue.h"
 
 
 int main(int argc, char *argv[]) {
@@ -20,26 +21,37 @@ int main(int argc, char *argv[]) {
     
     a->n = 2;
     a->m = 3;
-    int cola[3] = {1, 2, 0};
-    a->columns = cola;
-    int pointa[2] = {0, 2};
-    a->pointers = pointa;
+    a->pointers = (queue **)malloc((a->n)*sizeof(queue *));
+    int i;
+    for (i = 0; i< (a->n); i++) {
+        (a->pointers)[i] = createQueue();
+    }
+    
+    enqueue((a->pointers)[0], 1, 1);
+    enqueue((a->pointers)[1], 0, 1);
+    enqueue((a->pointers)[1], 1, 1);
+    
+    // test sur a
+    printf("%d\n", (a->pointers)[1]->first->j);
     
     // matrice creuse b
     smatrix *b = (smatrix *)malloc(sizeof(smatrix));
-    if (b==NULL) {
-        printf("fail malloc");
+    if (b==NULL)
         return(EXIT_FAILURE);
-    }
+    
     b->n = 3;
     b->m = 3;
-    int colb[2] = {1, 2};
-    b->columns = colb;
-    int pointb[3] = {-1, 0, 1};
-    b->pointers = pointb;
+    b->pointers = (queue **)malloc((b->m)*sizeof(queue *));
+    for (i = 0; i< (b->m); i++) {
+        (b->pointers)[i] = createQueue();
+    }
     
-    // test compatibleDimensions
-    printf("%d", compatibleDimensions(a, b));
+    enqueue((b->pointers)[1], 0, 1);
+    enqueue((b->pointers)[1], 1, 1);
+    enqueue((b->pointers)[2], 2, 1);
+    
+    // test sur a
+    printf("%d\n", (b->pointers)[2]->first->j);
     
     return (EXIT_SUCCESS);
 }
