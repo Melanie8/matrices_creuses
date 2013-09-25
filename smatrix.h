@@ -1,5 +1,5 @@
-// #ifndef _smatrix_h
-// #define _smatrix_h
+#ifndef _smatrix_h
+#define _smatrix_h
 
 /* Matrice creuse */
 typedef struct smatrix {
@@ -24,5 +24,5 @@ int compatibleDimensions (smatrix *, smatrix *);
  */
 smatrix *product (smatrix *, smatrix *);
 
-//#endif
+#endif
 
