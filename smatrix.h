@@ -1,12 +1,14 @@
 #ifndef _smatrix_h
 #define _smatrix_h
 
+#include "queue.h"
+
 /* Matrice creuse */
 typedef struct smatrix {
     /* Matrice de dimensions nxm */
     int n;
     int m;
-	queue *pointers[];
+	queue **pointers;
 } smatrix;
 
 /* Crée une nouvelle matrice creuse à partir d'un fichier d'entrée.

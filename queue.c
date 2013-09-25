@@ -43,68 +43,7 @@ int enqueue(queue *q, int j, int v) {
         q->last = new;
     }
     
-    /* Un nouvel élément a été ajouté à la file. */
-    (q->count)++;
-    
     return 0;
-}	
-
-int putNode(queue *q, struct node_t *n) {
-	/* On vérifie que q et n sont non NULL. */
-	if ((!q) || (!n)) {
-		return -1;
-	}
-
-	/* On modifie les liens de la file. Si la file est vide, il faut aussi
-	 * modifier 'first', sinon seul 'last change'. */
-    if (!(q->first)) {
-        q->first = n;
-        q->last = n;
-    } else {
-        q->last->next = n;
-        q->last = n;
-    }
-    
-    /* Un nouvel élément a été ajouté à la file. */
-    (q->count)++;
-    
-    return 0;
-}
-
-node *getNode(queue *q) {
-    /* On vérifie que q est non NULL et non vide. */
-    if ((!q) || !(q->first)) {
-        return NULL;
-    }
-
-    /* Sinon, on retient le premier élément. */
-    node *ret = q->first;
-    
-    /* Si la file contient un seul élément, il faut aussi modifier le pointeur
-	 * 'last' de q. Sinon, seul 'first' est modifié et pointe sur l'élément
-	 * suivant. */
-    if ((q->first) == (q->last)) {
-        q->first = NULL;
-        q->last = NULL;
-    } else {
-        q->first = q->first->next;
-    }
-    
-    /* On renvoie le noeud. */
-    return ret;
-}
-
-void freeNode(node *n) {
-	/* On vérifie que n est non NULL. */
-	if (!n) {
-        return;
-    }
-	
-	/* Sinon, on libère l'espace de son attribut name et le sien. */
-	free(n->img->pixels); n->img->pixels = NULL;
-	free(n->img); n->img = NULL;
-	free(n->name); n->name = NULL;
-	free(n); n = NULL;
 }
 
 void freeQueue(queue *q) {
@@ -120,7 +59,7 @@ void freeQueue(queue *q) {
         while (q->first) {
             temp = q->first;
             q->first = q->first->next;
-			freeNode(temp); temp = NULL;
+			free(temp); temp = NULL;
         }
     }
 	free(q); q = NULL;
