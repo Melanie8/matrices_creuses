@@ -5,23 +5,27 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <fcntl.h>
 #include <errno.h>
 //#include <pthread.h>
 //#include <semaphore.h>
 #include "smatrix.h"
 #include "queue.h"
 
-
 int main(int argc, char *argv[]) {
     
-    int i; // variable d'itération
-    int err; // variable d'erreur
+    //int i; // variable d'itération
+    //int err; // variable d'erreur
     
-    // arguments
-    // attention, -o doit toujours venir en premier!!
-    int optch;
-    char *ifile = NULL;
+    char *ifile = NULL; // nom du fichier d'entrée
+    int ides; // descripteur de fichier associé au fichier d'entrée
+    
     char *ofile = NULL;
+    
+    /* arguments */
+    // attention, -o doit toujours venir en premier!!
+    // vérifier le nombre d'arguments?
+    int optch;
     while ((optch = getopt(argc, argv, "o:")) != -1)
         switch (optch) {
             case 'o':
@@ -39,6 +43,32 @@ int main(int argc, char *argv[]) {
     printf("infile: %s\n", ifile);
     
     
+    /* ouverture du fichier infile */
+    if ((ides = open(ifile, O_RDONLY)) < 0) {
+        perror("open(input_file)");
+        return EXIT_FAILURE;
+    }
+    /* pas encore utile
+    struct stat istat;
+    if ((fstat(ides, &istat)) < 0) {
+        perror("error occurred: fstat\n");
+        close(ides); // vérifie pas la valeur de retour car déjà en erreur
+        return EXIT_FAILURE;
+    }
+    int isize = (size_t) istat.st_size;
+     */
+    
+    // lecture de fichier
+    
+    /* fermeture du fichier d'entrée */
+    if (close(ides) < 0) {
+        perror("close(input_file)");
+        return EXIT_FAILURE;
+    }
+    
+    
+    /* SECTION TEST */
+    /*
     // matrice creuse a
     smatrix *a = (smatrix *)malloc(sizeof(smatrix));
     if (a==NULL)
@@ -47,7 +77,7 @@ int main(int argc, char *argv[]) {
     a->n = 2;
     a->m = 3;
     a->pointers = (queue **)malloc((a->n)*sizeof(queue *));
-    int i;
+    //int i;
     for (i = 0; i< (a->n); i++) {
         (a->pointers)[i] = createQueue();
     }
@@ -77,7 +107,7 @@ int main(int argc, char *argv[]) {
     
     // test sur a
     printf("%d\n", (b->pointers)[2]->first->j);
-    
+    */
     
     return (EXIT_SUCCESS);
 }

@@ -1,19 +1,23 @@
-TEST=test_bitstring
-CFLAGS=-I$(HOME)/local/include -Wall -Werror
-LDFLAGS=-L$(HOME)/local/lib -lcunit
-SRC=$(wildcard *.c)
-OBJ=$(SRC:.c=.o)
+CC=gcc
+CFLAGS=-Wall -Werror
+SRC= $(wildcard *.c)
+OBJ= $(SRC:.c=.o)
+EXEC=matrixprod
 
-all: test
+all: $(EXEC)
+
+matrixprod: $(OBJ)
+	    @$(CC) -o -o $@ $^
+
+main.o : smatrix.h queue.h
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $< 
+	@$(CC) -o $@ -c $< $(CFLAGS)
 
-$(TEST): $(OBJ)
-	$(CC) -o $@ $(OBJ) $(LDFLAGS)
+.PHONY: clean mrproper
 
-test: $(TEST)
-	@LD_LIBRARY_PATH=$(HOME)/local/lib ./$(TEST) 
+clean:
+	@rm -rf *.o
 
-.PHONY: exec test
-				
+mrproper: clean
+	@rm -rf $(EXEC)
