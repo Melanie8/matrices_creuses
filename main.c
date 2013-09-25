@@ -14,30 +14,30 @@
 
 int main(int argc, char *argv[]) {
     
-    int i; /* variable d'itération */
-    int err; /* variable d'erreur */
+    int i; // variable d'itération
+    int err; // variable d'erreur
     
-    /* arguments */
-    int opt;
-    char *ifile;
-    char *ofile;
-    char format[] = "o:"; /* seule option disponible */
-    while ((opt = getopt(argc, argv, format) != -1) {
-        switch (opt) {
+    // arguments
+    // attention, -o doit toujours venir en premier!!
+    int optch;
+    char *ifile = NULL;
+    char *ofile = NULL;
+    while ((optch = getopt(argc, argv, "o:")) != -1)
+        switch (optch) {
             case 'o':
+                printf ("Paramètre o rencontré avec argument %s\n", optarg);
                 ofile = optarg;
-                printf("Options: -o avec %s\n", ofile);
+                printf("ofile: %s\n", ofile);
                 break;
             default:
+                printf("da\n");
                 fprintf(stderr, "Usage: %s [-o output_file] input_file\n", argv[0]);
                 return EXIT_FAILURE;
         }
-    }
-           
-    printf("Options: -o avec %s\n", ofile);
     
     ifile = argv[optind];
-    printf("Nom du fichier: %s\n", ifile);
+    printf("infile: %s\n", ifile);
+    
     
     // matrice creuse a
     smatrix *a = (smatrix *)malloc(sizeof(smatrix));
@@ -77,6 +77,7 @@ int main(int argc, char *argv[]) {
     
     // test sur a
     printf("%d\n", (b->pointers)[2]->first->j);
+    
     
     return (EXIT_SUCCESS);
 }
