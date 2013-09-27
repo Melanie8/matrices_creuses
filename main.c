@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <stdbool.h>
 //#include <pthread.h>
 //#include <semaphore.h>
 #include "smatrix.h"
@@ -58,9 +59,12 @@ int main(int argc, char *argv[]) {
     int isize = (size_t) istat.st_size;
      */
     
+    // a garder
+    /*
     smatrix left;
     smatrix rigth;
     smatrix result;
+     */
     
     // lecture de fichier
     
@@ -71,7 +75,19 @@ int main(int argc, char *argv[]) {
     }
     
     
+    
     /* SECTION TEST */
+    
+    char *s = "-1x4";
+    char *t = "2x3";
+    
+    smatrix *matrixdim1 = createSmatrix(s, true);
+    smatrix *matrixdim2 = createSmatrix(t, true);
+    
+    printf("le free commence\n");
+    freeSmatrix(matrixdim1);
+    freeSmatrix(matrixdim2);
+    
     /*
     // matrice creuse a
     smatrix *a = (smatrix *)malloc(sizeof(smatrix));

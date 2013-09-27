@@ -1,14 +1,15 @@
 CC=gcc
 CFLAGS=-Wall -Werror
+EXEC=matrixprod
 SRC= $(wildcard *.c)
 OBJ= $(SRC:.c=.o)
-EXEC=matrixprod
 
 all: $(EXEC)
 
 matrixprod: $(OBJ)
-	    @$(CC) -o -o $@ $^
+	    @$(CC) -o $@ $^
 
+smatrix.o : queue.h
 main.o : smatrix.h queue.h
 
 %.o: %.c

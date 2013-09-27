@@ -1,0 +1,32 @@
+essais ratés:
+
+long getValue(char *s, char **endptr, char expect)
+{
+    long value;
+    
+    /* String dans lequel on copie la chaîne de caractères complète. */
+    char *dim = (char *) malloc((strlen(s)+1)*sizeof(char));
+    if (!dim) {
+        fprintf(stderr, "Error calling malloc to handle the"
+                " dimensions' string\n");
+    }
+    strcpy(dim, s);
+    
+    /* Nombre de lignes. */
+    printf("avant 2ble pointeur : %s\n", *endptr);
+    value = strtol(dim, endptr, 10);
+    printf("après 2ble pointeur : %s\n", *endptr);
+    free(dim);
+    
+    /* Le format n'est pas respecté. */
+    if(**endptr != expect)
+    {
+        printf("expect: %c\n", expect);
+        fprintf(stderr,"Error :  the file encoding is incorrect. Each matrix\n"
+                "\t should start with a dimensions' line as follows :\n"
+                "\t LxC where L and C are the number of lines and columns. \n");
+        return 0;
+    }
+    
+    return value;
+}
