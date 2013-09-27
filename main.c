@@ -58,6 +58,10 @@ int main(int argc, char *argv[]) {
     int isize = (size_t) istat.st_size;
      */
     
+    smatrix left;
+    smatrix rigth;
+    smatrix result;
+    
     // lecture de fichier
     
     /* fermeture du fichier d'entrée */
