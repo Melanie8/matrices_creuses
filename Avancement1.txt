@@ -1,16 +1,14 @@
 Répartition
 
 - main:
-	- getopt
-	- ouverture de fichier
+	- getopt: à améliorer
+	- ouverture de fichier 1: fini
+	- lecture des fichiers pour en faire des matrices
 
-- manipulation de matrice
-	- structure
+- manipulation de matrices
+	- 2 structures, matrices par lignes et par colonnes
 		- header avec la taille (+ nombre de noeuds)
-		- noeuds (noeuds (position xy, lien droite, lien bas))
-		- liste perpendiculairement chaînée
-		- ou alors RSC/RCS ?
+		- noeuds (noeuds (position xy, suivant
 	- opérations dessus (multiplication)
-	=> à clarifier
 
-RDV mercredi à 14h
+- Makefile: enlever la ligne qui printf
