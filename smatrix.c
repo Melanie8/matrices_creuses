@@ -108,41 +108,46 @@ int compatibleDimensions (smatrix *a, smatrix *b) {
 
 smatrix *product (smatrix *a, smatrix *b) {
     if (!compatibleDimensions(a,b)) {
-        // rajouter un error
+        // rajouter une error
         return NULL;
     }
     
-<<<<<<< HEAD
     // résultat
     smatrix *r = (smatrix *)malloc(sizeof(smatrix));
     if (r==NULL)
-        return(EXIT_FAILURE);
+        // rajouter une error
+        return r;
     int nLines = a->n;
     int nColumns = b->m;
     r->n = nLines;
     r->m = nColumns;
-    r->pointers = (queue **)malloc(nLines*sizeof(queue *));
-=======
-    return NULL;
-    /*
->>>>>>> 4e4d6c749489a5599f6b3c72a6069b7d2ff24465
+    r->pointers = (queue **)malloc(nLines*sizeof(queue *)); //nb : si on parallélise, il faut faire nColumns*... si on veut que ca soit une postmatrice 
+    
     int i;
     for (i = 0; i< nLines; i++) {
-        (a->pointers)[i] = createQueue();
+        (r->pointers)[i] = createQueue();
     }
     
-    
-    int i, j;
+    // on parcourt a en lignes et b en colonnes
+    int j, k, newV;
     for (i=0; i<nLines; i++) {
         for (j= 0; j<nColumns; j++) {
-            currentA = (a->pointer)[i]->first;
-            currentB = (b->pointer)[j]->first;
+            newV = 0;
+            node *currentA;
+            node *currentB;
             
-            if (!(currentA || !currentB)
-                enqueue((r->pointers)[i], j, 0);
+            // on parcourt la ligne i et la colonne j à la recherche d'élément à multiplier
+            for (currentA = (a->pointers)[i]->first; currentA != NULL; currentA = currentA->next) {
+                k = currentA->j;
+                for(currentB = (b->pointers)[j]->first; currentB != NULL && currentB->j < k; currentB = currentB->next) {}
+                if (currentB != NULL && currentB->j==k)
+                    newV += (currentA->v)*(currentB->v);
+            }
+            if (newV != 0)
+                enqueue((r->pointers)[i], j, newV);
         }
     }
-     */
+    return r;
 }
 
 void freeSmatrix (smatrix *sm) {
@@ -167,6 +172,27 @@ void freeSmatrix (smatrix *sm) {
         free(sm->pointers);
     }
     free(sm); sm = NULL;
+}
+
+void displayPreSmatrix (smatrix *sm) {
+    int n = sm->n;
+    int m = sm->m;
+    int i, j, k;
+    for (i=0; i<n; i++) {
+        node *current;
+        j = -1;
+        for (current = sm->pointers[i]->first; current!=NULL; current = current->next) {
+            for (k=1; k<(current->j)-j; k++) {
+                printf("0 ");
+            }
+            printf("%d ", current->v);
+            j = current->j;
+        }
+        for (k=1; k < m-j; k++) {
+            printf("0 ");
+        }
+        printf("\n");
+    }
 }
 
 

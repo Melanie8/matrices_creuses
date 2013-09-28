@@ -35,5 +35,7 @@ smatrix *product (smatrix *, smatrix *);
 
 void freeSmatrix (smatrix *);
 
+void displayPreSmatrix (smatrix *);
+
 #endif
 

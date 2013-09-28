@@ -10,7 +10,8 @@ queue *createQueue() {
         perror("Error calling calloc to initialise a queue");
         return NULL;
     }
-
+    q->first = NULL;
+    q->last = NULL;
     /* On renvoie la nouvelle file. */
     return q;
 }

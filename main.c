@@ -15,17 +15,20 @@
 
 int main(int argc, char *argv[]) {
     
+    
     //int i; // variable d'itération
     //int err; // variable d'erreur
-    
+    /*
     char *ifile = NULL; // nom du fichier d'entrée
     int ides; // descripteur de fichier associé au fichier d'entrée
     
     char *ofile = NULL;
+    */
     
     /* arguments */
     // attention, -o doit toujours venir en premier!!
     // vérifier le nombre d'arguments?
+    /*
     int optch;
     while ((optch = getopt(argc, argv, "o:")) != -1)
         switch (optch) {
@@ -42,13 +45,15 @@ int main(int argc, char *argv[]) {
     
     ifile = argv[optind];
     printf("infile: %s\n", ifile);
-    
+    */
     
     /* ouverture du fichier infile */
+    /*
     if ((ides = open(ifile, O_RDONLY)) < 0) {
         perror("open(input_file)");
         return EXIT_FAILURE;
     }
+     */
     /* pas encore utile
     struct stat istat;
     if ((fstat(ides, &istat)) < 0) {
@@ -69,15 +74,16 @@ int main(int argc, char *argv[]) {
     // lecture de fichier
     
     /* fermeture du fichier d'entrée */
+    /*
     if (close(ides) < 0) {
         perror("close(input_file)");
         return EXIT_FAILURE;
     }
-    
+    */
     
     
     /* SECTION TEST */
-    
+    /*
     char *s = "-1x4";
     char *t = "2x3";
     
@@ -87,8 +93,10 @@ int main(int argc, char *argv[]) {
     printf("le free commence\n");
     freeSmatrix(matrixdim1);
     freeSmatrix(matrixdim2);
+    */
     
-    /*
+    
+    
     // matrice creuse a
     smatrix *a = (smatrix *)malloc(sizeof(smatrix));
     if (a==NULL)
@@ -97,7 +105,7 @@ int main(int argc, char *argv[]) {
     a->n = 2;
     a->m = 3;
     a->pointers = (queue **)malloc((a->n)*sizeof(queue *));
-    //int i;
+    int i;
     for (i = 0; i< (a->n); i++) {
         (a->pointers)[i] = createQueue();
     }
@@ -107,7 +115,7 @@ int main(int argc, char *argv[]) {
     enqueue((a->pointers)[1], 1, 1);
     
     // test sur a
-    printf("%d\n", (a->pointers)[1]->first->j);
+    printf("%d\n", (a->pointers)[1]->first->next->j);
     
     // matrice creuse b
     smatrix *b = (smatrix *)malloc(sizeof(smatrix));
@@ -125,9 +133,20 @@ int main(int argc, char *argv[]) {
     enqueue((b->pointers)[1], 1, 1);
     enqueue((b->pointers)[2], 2, 1);
     
-    // test sur a
+    // test sur b
     printf("%d\n", (b->pointers)[2]->first->j);
-    */
+    
+    // test produit
+    smatrix *r = product(a, b);
+    printf("%d\n", (r->pointers)[0]->first->j);
+    printf("%d\n", (r->pointers)[0]->first->v);
+    printf("%d\n", (r->pointers)[1]->first->j);
+    printf("%d\n", (r->pointers)[1]->first->v);
+    
+    // test display présmatrix
+    displayPreSmatrix(a);
+    displayPreSmatrix(b);
+    displayPreSmatrix(r);
     
     return (EXIT_SUCCESS);
 }
