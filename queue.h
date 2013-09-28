@@ -4,8 +4,8 @@
 
 /* Noeud permettant de construire une file sur base d'une liste simplement chaînée. */
 typedef struct node_t {
-    int j;
-    int v;
+    long j;
+    long v;
     struct node_t *next; /* Pointeur vers le noeud suivant */
 } node;
 
@@ -27,7 +27,7 @@ queue *createQueue();
  * la file, l'image ou la chaîne de caractères est NULL et en cas d'erreur, la
  * fonction renvoie une -1.
  */
-int enqueue(queue *, int, int);
+int enqueue(queue *, long, long);
 
 
 /* Libère la mémoire de la file entière.

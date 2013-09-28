@@ -95,7 +95,12 @@ int main(int argc, char *argv[]) {
     freeSmatrix(matrixdim2);
     */
     
-    
+    if (1)
+        printf("1");
+    if (0)
+        printf("0");
+    if (2)
+        printf("2");
     
     // matrice creuse a
     smatrix *a = (smatrix *)malloc(sizeof(smatrix));

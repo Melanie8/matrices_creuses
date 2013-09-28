@@ -98,72 +98,92 @@ smatrix *createSmatrix(char *s, bool b) {
 int compatibleDimensions (smatrix *a, smatrix *b) {
     if (a==NULL || b==NULL)
         return -1;
-    
-    return ((a->m)==b->n);
+    return ((a->m)==(b->n));
 }	
 
-/* Pre : dimensions compatibles
- * Post : renvoie le produit des deux
- */
+
 
 smatrix *product (smatrix *a, smatrix *b) {
-    if (!compatibleDimensions(a,b)) {
-        // rajouter une error
+    /* Test des dimensions */
+    int cd = compatibleDimensions(a,b);
+    // pointeur(s) NULL
+    if (cd == -1) {
+        perror("Error : one of the pointers passed to the product fonction is NULL");
+        return NULL;
+    }
+    // dimensions incompatibles
+    if (cd == 0) {
+        perror("Error : you're trying to multiply matrices with incompatible dimensions");
         return NULL;
     }
     
-    // résultat
+    
+    /* Création de la matrice qui va contenir le résultat de la multiplication */
     smatrix *r = (smatrix *)malloc(sizeof(smatrix));
-    if (r==NULL)
-        // rajouter une error
-        return r;
-    int nLines = a->n;
-    int nColumns = b->m;
+    if (r==NULL) {
+        perror("Error calling malloc to initialise the smatrix");
+        return NULL;
+    }
+    long nLines = a->n;
+    long nColumns = b->m;
     r->n = nLines;
     r->m = nColumns;
     r->pointers = (queue **)malloc(nLines*sizeof(queue *)); //nb : si on parallélise, il faut faire nColumns*... si on veut que ca soit une postmatrice 
-    
-    int i;
+    if (r->pointers == NULL) {
+        perror("Error calling malloc to initialise the array of queues");
+        return NULL;
+    }
+    long i;
     for (i = 0; i< nLines; i++) {
         (r->pointers)[i] = createQueue();
     }
     
-    // on parcourt a en lignes et b en colonnes
-    int j, k, newV;
+    
+    /* Remplissage de la matrice */
+    long j, k, newV;
     for (i=0; i<nLines; i++) {
         for (j= 0; j<nColumns; j++) {
             newV = 0;
             node *currentA;
             node *currentB;
             
-            // on parcourt la ligne i et la colonne j à la recherche d'élément à multiplier
+            // on parcourt la ligne i et la colonne j à la recherche d'éléments à multiplier
             for (currentA = (a->pointers)[i]->first; currentA != NULL; currentA = currentA->next) {
                 k = currentA->j;
                 for(currentB = (b->pointers)[j]->first; currentB != NULL && currentB->j < k; currentB = currentB->next) {}
                 if (currentB != NULL && currentB->j==k)
                     newV += (currentA->v)*(currentB->v);
             }
+            // on ne rajoute un noeud à la queue que si sa valeur n'est pas nulle
             if (newV != 0)
                 enqueue((r->pointers)[i], j, newV);
         }
     }
+    
+    
+    /* Retour du résultat */
     return r;
 }
 
+
+
+
 void freeSmatrix (smatrix *sm) {
     
+    /* Matrice NULL -> rien à faire */
     if (!sm) {
         return;
-    } else if (!sm->pointers) {
-    } else {
-        long i, max;
+    }
+    
+    /* Libérer pointers si il est non NULL */
+    if (sm->pointers)
+        long i, l;
         if (sm->lines) {
-            max = sm->n;
+            l = sm->n;
         } else {
-            max = sm->m;
+            l = sm->m;
         }
-        for (i=0; i<max; i++) {
-
+        for (i=0; i<l; i++) {
             if (sm->pointers[i]) {
                 freeQueue(sm->pointers[i]);
                 sm->pointers[i] = NULL;
@@ -171,13 +191,16 @@ void freeSmatrix (smatrix *sm) {
         }
         free(sm->pointers);
     }
-    free(sm); sm = NULL;
+    /* Libérer la matrice */
+    free(sm);
 }
 
+
+
 void displayPreSmatrix (smatrix *sm) {
-    int n = sm->n;
-    int m = sm->m;
-    int i, j, k;
+    long n = sm->n;
+    long m = sm->m;
+    long i, j, k;
     for (i=0; i<n; i++) {
         node *current;
         j = -1;

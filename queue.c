@@ -16,7 +16,7 @@ queue *createQueue() {
     return q;
 }
 
-int enqueue(queue *q, int j, int v) {
+int enqueue(queue *q, long j, long v) {
     /* On vérifie que q, i et string sont non NULL. */
     if (!q) {
 		fprintf(stderr, "Error calling enqueue : NULL arguments \n");
@@ -63,6 +63,6 @@ void freeQueue(queue *q) {
 			free(temp); temp = NULL;
         }
     }
-	free(q); q = NULL;
+	free(q);
 }
 
