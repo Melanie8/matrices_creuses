@@ -103,7 +103,7 @@ int compatibleDimensions (smatrix *a, smatrix *b) {
 
 
 
-smatrix *product (smatrix *a, smatrix *b) {
+smatrix *product (smatrix *a, smatrix *b, bool lines) {
     /* Test des dimensions */
     int cd = compatibleDimensions(a,b);
     // pointeur(s) NULL
@@ -128,17 +128,27 @@ smatrix *product (smatrix *a, smatrix *b) {
     long nColumns = b->m;
     r->n = nLines;
     r->m = nColumns;
-    r->pointers = (queue **)malloc(nLines*sizeof(queue *)); //nb : si on parallélise, il faut faire nColumns*... si on veut que ca soit une postmatrice 
+    r->lines = lines;
+    long L, l;
+    if (lines) {
+        L = nLines;
+        l = nColumns;
+    }
+    else {
+        L = nColumns;
+        l = nLines;
+    }
+    
+    r->pointers = (queue **)malloc(L*sizeof(queue *));
     if (r->pointers == NULL) {
         perror("Error calling malloc to initialise the array of queues");
         return NULL;
     }
     long i;
-    for (i = 0; i< nLines; i++) {
+    for (i = 0; i<L; i++) {
         (r->pointers)[i] = createQueue();
     }
-    
-    
+
     /* Remplissage de la matrice */
     long j, k, newV;
     for (i=0; i<nLines; i++) {
@@ -155,11 +165,15 @@ smatrix *product (smatrix *a, smatrix *b) {
                     newV += (currentA->v)*(currentB->v);
             }
             // on ne rajoute un noeud à la queue que si sa valeur n'est pas nulle
-            if (newV != 0)
-                enqueue((r->pointers)[i], j, newV);
+            if (newV != 0) {
+                if (lines)
+                    enqueue((r->pointers)[i], j, newV);
+                else
+                    enqueue((r->pointers)[j], i, newV);
+            }
+            
         }
     }
-    
     
     /* Retour du résultat */
     return r;
@@ -169,14 +183,13 @@ smatrix *product (smatrix *a, smatrix *b) {
 
 
 void freeSmatrix (smatrix *sm) {
-    
     /* Matrice NULL -> rien à faire */
     if (!sm) {
         return;
     }
     
     /* Libérer pointers si il est non NULL */
-    if (sm->pointers)
+    if (sm->pointers) {
         long i, l;
         if (sm->lines) {
             l = sm->n;
@@ -197,9 +210,21 @@ void freeSmatrix (smatrix *sm) {
 
 
 
-void displayPreSmatrix (smatrix *sm) {
-    long n = sm->n;
-    long m = sm->m;
+void displaySmatrix (smatrix *sm) {
+    if (!sm) {
+        printf("Le pointeur passé en argument est NULL");
+        return;
+    }
+    bool lines = sm->lines;
+    long n, m;
+    if (lines) {
+        n = sm->n;
+        m = sm->m;
+    }
+    else {
+        n = sm->m;
+        m = sm->n;
+    }
     long i, j, k;
     for (i=0; i<n; i++) {
         node *current;
@@ -208,7 +233,7 @@ void displayPreSmatrix (smatrix *sm) {
             for (k=1; k<(current->j)-j; k++) {
                 printf("0 ");
             }
-            printf("%d ", current->v);
+            printf("%ld ", current->v);
             j = current->j;
         }
         for (k=1; k < m-j; k++) {
@@ -217,5 +242,4 @@ void displayPreSmatrix (smatrix *sm) {
         printf("\n");
     }
 }
-
 

@@ -52,12 +52,14 @@ int compatibleDimensions (smatrix *, smatrix *);
 
 
 
-/* Multiplie deux matrices creuses.
+/* Multiplie deux matrices creuses, dont la 1ère a été encodée par lignes et la 
+ * 2ème par colonnes. Le booléen passé en argument spécifie si l'on veut que le
+ * résulat soit encodé par lignes ou par colonnes.
  *
  * Renvoie un pointeur vers la matrice résultante. En cas d'erreur (pointeur NULL,
  * dimensions incompatibles, échec d'un malloc), retourne NULL.
  */
-smatrix *product (smatrix *, smatrix *);
+smatrix *product (smatrix *, smatrix *, bool);
 
 
 
@@ -67,9 +69,11 @@ void freeSmatrix (smatrix *);
 
 
 
-/* Affiche une matrice creuse (avec les 0) sur la sortie standard.
+/* Affiche une matrice creuse (avec tous les 0) sur la sortie standard
+ * ligne par ligne pour une matrice encodée par lignes
+ * colonne par colonne pour une matrice encodée par colonnes
  */
-void displayPreSmatrix (smatrix *);
+void displaySmatrix (smatrix *);
 
 #endif
 

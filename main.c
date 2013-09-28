@@ -109,6 +109,7 @@ int main(int argc, char *argv[]) {
     
     a->n = 2;
     a->m = 3;
+    a->lines=1;
     a->pointers = (queue **)malloc((a->n)*sizeof(queue *));
     int i;
     for (i = 0; i< (a->n); i++) {
@@ -120,7 +121,7 @@ int main(int argc, char *argv[]) {
     enqueue((a->pointers)[1], 1, 1);
     
     // test sur a
-    printf("%d\n", (a->pointers)[1]->first->next->j);
+    printf("%ld\n", (a->pointers)[1]->first->next->j);
     
     // matrice creuse b
     smatrix *b = (smatrix *)malloc(sizeof(smatrix));
@@ -129,6 +130,7 @@ int main(int argc, char *argv[]) {
     
     b->n = 3;
     b->m = 3;
+    b->lines = 0;
     b->pointers = (queue **)malloc((b->m)*sizeof(queue *));
     for (i = 0; i< (b->m); i++) {
         (b->pointers)[i] = createQueue();
@@ -139,19 +141,19 @@ int main(int argc, char *argv[]) {
     enqueue((b->pointers)[2], 2, 1);
     
     // test sur b
-    printf("%d\n", (b->pointers)[2]->first->j);
+    printf("%ld\n", (b->pointers)[2]->first->j);
     
     // test produit
-    smatrix *r = product(a, b);
-    printf("%d\n", (r->pointers)[0]->first->j);
-    printf("%d\n", (r->pointers)[0]->first->v);
-    printf("%d\n", (r->pointers)[1]->first->j);
-    printf("%d\n", (r->pointers)[1]->first->v);
+    smatrix *r = product(a, b, 1);
+    printf("%ld\n", (r->pointers)[0]->first->j);
+    printf("%ld\n", (r->pointers)[0]->first->v);
+    printf("%ld\n", (r->pointers)[1]->first->j);
+    printf("%ld\n", (r->pointers)[1]->first->v);
     
     // test display présmatrix
-    displayPreSmatrix(a);
-    displayPreSmatrix(b);
-    displayPreSmatrix(r);
+    displaySmatrix(a);
+    displaySmatrix(b);
+    displaySmatrix(r);
     
     return (EXIT_SUCCESS);
 }
