@@ -21,9 +21,31 @@ smatrix *product (smatrix *a, smatrix *b) {
         // rajouter un error
         return NULL;
     }
+    
+    // résultat
+    smatrix *r = (smatrix *)malloc(sizeof(smatrix));
+    if (r==NULL)
+        return(EXIT_FAILURE);
+    int nLines = a->n;
+    int nColumns = b->m;
+    r->n = nLines;
+    r->m = nColumns;
+    r->pointers = (queue **)malloc(nLines*sizeof(queue *));
     int i;
-    for (i=0; i<(a->n); i++) {
-        currentLine =
+    for (i = 0; i< nLines; i++) {
+        (a->pointers)[i] = createQueue();
+    }
+    
+    
+    int i, j;
+    for (i=0; i<nLines; i++) {
+        for (j= 0; j<nColumns; j++) {
+            currentA = (a->pointer)[i]->first;
+            currentB = (b->pointer)[j]->first;
+            
+            if (!(currentA || !currentB)
+                enqueue((r->pointers)[i], j, 0);
+        }
     }
 }
 
