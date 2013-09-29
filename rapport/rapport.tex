@@ -1,0 +1,156 @@
+%--------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%--------------------------------------------------------------------------
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage[left=2cm,right=2cm,top=2.2cm,bottom=2cm]{geometry}
+
+\usepackage{fancyhdr} % Required for custom headers
+\usepackage{lastpage} % Required to determine the last page for the footer
+\usepackage{extramarks} % Required for headers and footers
+\usepackage[usenames,dvipsnames]{color} % Required for custom colors
+\usepackage{graphicx} % Required to insert images
+\usepackage{listings} % Required for insertion of code
+\usepackage{courier} % Required for the courier font
+\usepackage{verbatim}
+
+\usepackage{eurosym}
+
+% Margins
+%\topmargin=-0.45in
+%\textwidth=6.5in
+%\textheight=9.8in
+\headsep=0.25in
+
+% Set up the header and footer
+%\pagestyle{fancy}
+%\rhead{\firstxmark} % Top right header
+%\lfoot{\lastxmark} % Bottom left footer
+%\cfoot{} % Bottom center footer
+%\rfoot{Page\ \thepage\ /\ \protect\pageref{LastPage}} % Bottom right footer
+%\renewcommand\headrulewidth{0.3pt} % Size of the header rule
+%\renewcommand\footrulewidth{0.3pt} % Size of the footer rule
+
+%\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+%--------------------------------------------------------------------------
+%	CODE INCLUSION CONFIGURATION
+%--------------------------------------------------------------------------
+
+\definecolor{MyDarkGreen}{rgb}{0.0,0.4,0.0} % This is the color used for comments
+\lstloadlanguages{C} % Load C syntax for listings, for a list of other languages supported see: ftp://ftp.tex.ac.uk/tex-archive/macros/latex/contrib/listings/listings.pdf
+\lstset{language=C, % Oz
+        frame=single, % Single frame around code
+        basicstyle=\small\ttfamily, % Use small true type font
+        keywordstyle=[1]\color{Blue}\bf, % Perl functions bold and blue
+        keywordstyle=[2]\color{Purple}, % Perl function arguments purple
+        keywordstyle=[3]\color{Blue}\underbar, % Custom functions underlined and blue
+        identifierstyle=, % Nothing special about identifiers                                         
+        commentstyle=\usefont{T1}{pcr}{m}{sl}\color{MyDarkGreen}\small, % Comments small dark green courier font
+        stringstyle=\color{Purple}, % Strings are purple
+        showstringspaces=false, % Don't put marks in string spaces
+        tabsize=5, % 5 spaces per tab
+        %
+        % Put standard Perl functions not included in the default language here
+        morekeywords={rand},
+        %
+        % Put Perl function parameters here
+        morekeywords=[2]{on, off, interp},
+        %
+        % Put user defined functions here
+        morekeywords=[3]{test},
+       	%
+        morecomment=[l][\color{Blue}]{...}, % Line continuation (...) like blue comment
+        numbers=left, % Line numbers on left
+        firstnumber=1, % Line numbers start with line 1
+        numberstyle=\tiny\color{Blue}, % Line numbers are blue and small
+        stepnumber=5 % Line numbers go in steps of 5
+}
+
+\begin{document}
+	
+%--------------------------------------------------------------------------
+%	TITLE PAGE
+%--------------------------------------------------------------------------
+\begin{titlepage}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+\centering % Center everything on the page
+ 
+%	HEADING SECTIONS
+\null
+\vspace{2cm}
+\textsc{\Large Université Catholique de Louvain}\\[1cm] % Name of your university/college
+\textsc{\large LINGI1113 \\[0.3cm] Systèmes informatiques 2}\\[0.5cm] % Major heading such as course name
+%\textsc{\large Minor Heading}\\[0.5cm] % Minor heading such as course title
+
+%	TITLE SECTION
+
+\HRule \\[0.4cm]
+{ \LARGE \bfseries Projet 1~: Multiplication de matrices creuses\\[0.4cm] % Title of your document
+\large \bfseries Rapport} \\[0.4cm]
+
+\HRule \\[0.5cm]
+ 
+%\begin{figure}[!h]
+%	\begin{center}
+%	%2048 × 1364
+%		\includegraphics[width=15cm]{}
+%	\end{center}
+%\end{figure}
+
+%	AUTHOR SECTION
+
+\large 
+{\begin{tabular}{lll}
+\textsc{Peschke} & Lena & 5826-11-00\\
+\textsc{Sedda} & Mélanie & 2246-11-00\\
+\end{tabular}}
+\\[1cm]
+
+\normalsize
+{\begin{tabular}{ll}
+\textit{Professeur} : & Marc Lobelle \\
+\end{tabular}}
+\\[1cm]
+
+%	DATE SECTION
+
+{\normalsize \today}\\[3cm] % Date, change the \today to a set date if you want to be precise
+
+\newpage
+
+\end{titlepage}
+
+%--------------------------------------------------------------------------
+%	TABLE OF CONTENTS
+%--------------------------------------------------------------------------
+
+\pagenumbering{gobble}
+\clearpage
+\thispagestyle{empty}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+%--------------------------------------------------------------------------
+%	CONTENT
+%--------------------------------------------------------------------------
+
+\section{Performances}
+\subsection{Fonctionnement}
+\subsection{Comparaison avec une implémentation triviale de matrices pleines}
+\subsection{Domaines d'application}
+
+\section{Mesures}
+\subsection{Spécifications}
+\subsection{Résultat}
+\subsection{Interprétation}
+
+\end{document}
