@@ -7,7 +7,7 @@ queue *createQueue() {
     /* On alloue de la mémoire pour la nouvelle file. */
     queue *q = (queue *)calloc(1, sizeof(queue));
     if (!q) {
-        perror("Error calling calloc to initialise a queue");
+        fprintf(stderr, "Error calling calloc to initialise a queue");
         return NULL;
     }
     q->first = NULL;
@@ -26,7 +26,7 @@ int enqueue(queue *q, long j, long v) {
     /* On alloue de la mémoire pour le nouveau noeud. */
     node *new = (node *)calloc(1, sizeof(node));
     if (!new) {
-        perror("Error calling calloc to create a new node");
+        fprintf(stderr, "Error calling calloc to create a new node");
         return -1;
     }
 	
