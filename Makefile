@@ -10,7 +10,8 @@ matrixprod: $(OBJ)
 	    @$(CC) -o $@ $^
 
 smatrix.o : queue.h
-main.o : smatrix.h queue.h
+read.o : smatrix.h
+main.o : smatrix.h queue.h read.h
 
 %.o: %.c
 	@$(CC) -o $@ -c $< $(CFLAGS)

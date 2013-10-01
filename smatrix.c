@@ -46,7 +46,7 @@ smatrix *createSmatrix(char *s, bool b) {
     /* Nombre de colonnes */
     col = strtol(dim2, &endptr, 10);
     free(dim2);
-    if (*endptr != '\0') {
+    if (*endptr != '\n') {
         fprintf(stderr,"Error :  the file encoding is incorrect. Each matrix\n"
                 "\t should start with a dimensions' line as follows :\n"
                 "\t LxC where L and C are the number of lines and columns. \n"
@@ -79,18 +79,29 @@ smatrix *createSmatrix(char *s, bool b) {
     }
     
     /* Initialisation du tableau de listes chaînées */
-    queue *q = createQueue();
+    queue **q = (queue **)calloc((int) store, sizeof(queue *));
     if (!q) {
-        fprintf(stderr, "Error calling createQueue to create a new queue for"
-                " the new matrix\n");
-        free(matrix);
+        fprintf(stderr, "Error calling calloc to initialize the queue array for the matrix\n");
+        freeSmatrix(matrix);
         return NULL;
     }
     
+    /* Initialisation de toutes les listes chaînées */
+    long i;
+    for (i=0; i <store; i++) {
+        q[i] = createQueue();
+        if (!q[i]) {
+            fprintf(stderr, "Error calling malloc to initialize queue %ld of the matrix\n", i);
+            freeSmatrix(matrix);
+            return NULL;
+        }
+    }
+    
+    /* Données de la matrice */
     matrix->n = lin;
     matrix->m = col;
     matrix->lines = b;
-    matrix->pointers = &q;
+    matrix->pointers = q;
    
     return matrix;
 }
@@ -133,12 +144,12 @@ smatrix *product (smatrix *a, smatrix *b, bool lines) {
     int cd = compatibleDimensions(a,b);
     // pointeur(s) NULL
     if (cd == -1) {
-        fprintf(stderr, "Error : one of the pointers passed to the product fonction is NULL");
+        fprintf(stderr, "Error : one of the pointers passed to the product fonction is NULL\n");
         return NULL;
     }
     // dimensions incompatibles
     if (cd == 0) {
-        fprintf(stderr, "Error : you're trying to multiply matrices with incompatible dimensions");
+        fprintf(stderr, "Error : you're trying to multiply matrices with incompatible dimensions\n");
         return NULL;
     }
     
@@ -147,7 +158,7 @@ smatrix *product (smatrix *a, smatrix *b, bool lines) {
     /* Création de la matrice qui va contenir le résultat de la multiplication */
     smatrix *r = (smatrix *)malloc(sizeof(smatrix));
     if (r==NULL) {
-        fprintf(stderr, "Error calling malloc to initialise the smatrix");
+        fprintf(stderr, "Error calling malloc to initialise the smatrix\n");
         return NULL;
     }
     long nLines = a->n;
@@ -167,7 +178,7 @@ smatrix *product (smatrix *a, smatrix *b, bool lines) {
     
     r->pointers = (queue **)malloc(L*sizeof(queue *));
     if (r->pointers == NULL) {
-        fprintf(stderr, "Error calling malloc to initialise the array of queues");
+        fprintf(stderr, "Error calling malloc to initialise the array of queues\n");
         free(r);
         return NULL;
     }
@@ -237,9 +248,10 @@ void freeSmatrix (smatrix *sm) {
 
 void displaySmatrix (smatrix *sm) {
     if (!sm) {
-        printf("Le pointeur passé en argument est NULL");
+        printf("Le pointeur passé en argument est NULL\n");
         return;
     }
+    printf("début de DISPLAY:\n");
     bool lines = sm->lines;
     long n, m;
     if (lines) {
