@@ -57,6 +57,7 @@ int main(int argc, char *argv[]) {
     smatrix *result;
     smatrix *current;
     bool left_already = false;
+    bool new_available = false;
     
     /* initialisation */
     long line, col, val;
@@ -66,6 +67,10 @@ int main(int argc, char *argv[]) {
     
     /* boucle sur les lignes pour les nouvelles matrices */
 	while ((read = getline(&snippet, &len, ides)) > 0) {
+        
+        /* multiplication sur la variable */
+        // mult
+        // swap entre resultat et left, right vide
         
         /* création d'une nouvelle matrice */
         if (!left_already) {
@@ -78,6 +83,7 @@ int main(int argc, char *argv[]) {
                 goto close_ifile;
             }
             current = left;
+            left_already = true;
         } else {
             
             // matrice par colonnes
@@ -88,6 +94,7 @@ int main(int argc, char *argv[]) {
                 goto free_matrixes;
             }
             current = right;
+            new_available = true;
         }
         
         /* boucle sur les lignes pour remplir la matrice créée */
