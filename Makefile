@@ -1,4 +1,4 @@
-CC=gcc
+CC=clang
 CFLAGS=-Wall -Werror
 EXEC=matrixprod
 SRC= $(wildcard *.c)

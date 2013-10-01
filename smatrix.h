@@ -42,9 +42,23 @@ typedef struct smatrix {
  * Renvoie un pointeur vers la matrice. En cas d'erreur, retourne NULL. */
 smatrix *createSmatrix (char *, bool);
 
+/* Remplit une case de la matrice creuse. Le pointeur fait référence à une
+ * smatrix initialisée par la fonction createSmatrix. Les trois valeurs long
+ * représentent la position en ligne, en colonne et la valeur du champ.
+ * Si la matrice est stockée en lignes, l'élément sera ajouté dans la ième
+ * ligne. Si la matrice est stockée en colonne, l'élément sera placé dans 
+ * la jème colonne. Dans les deux cas, il s'agit du tableau de listes chaînées
+ * de la matrice creuse.
+ *
+ * Renvoit -1 si le pointeur est nul
+ *            si une des valeurs d'index est négative
+ *          1 si la valeur du champ est nulle
+ */
+
+int fillSmatrix(smatrix *, long, long, long);
 
 
-/* Renvoie -1 si au moins un pointeur est nul
+/* Renvoit -1 si au moins un pointeur est nul
  *          1 si les deux matrices peuvent être multipliées
  *          0 sinon
  */

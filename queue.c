@@ -17,7 +17,7 @@ queue *createQueue() {
 }
 
 int enqueue(queue *q, long j, long v) {
-    /* On vérifie que q, i et string sont non NULL. */
+    /* On vérifie que q, est non NULL. */
     if (!q) {
 		fprintf(stderr, "Error calling enqueue : NULL arguments \n");
         return -1;

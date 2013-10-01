@@ -17,6 +17,7 @@ smatrix *createSmatrix(char *s, bool b) {
     if (!dim1) {
         fprintf(stderr, "Error calling malloc to handle the"
                 " dimensions' string\n");
+        return NULL;
     }
     strcpy(dim1, s);
     
@@ -38,6 +39,7 @@ smatrix *createSmatrix(char *s, bool b) {
     if (!dim2) {
         fprintf(stderr, "Error calling malloc to handle the"
                 " dimensions' string\n");
+        return NULL;
     }
     strcpy(dim2, endptr+1);
     
@@ -49,6 +51,7 @@ smatrix *createSmatrix(char *s, bool b) {
                 "\t should start with a dimensions' line as follows :\n"
                 "\t LxC where L and C are the number of lines and columns. \n"
                 "\t Something was written beyond the second dimension.\n");
+        return NULL;
     }
     
     /* On vérifie que les dimensions sont cohérentes. */
@@ -76,24 +79,44 @@ smatrix *createSmatrix(char *s, bool b) {
     }
     
     /* Initialisation du tableau de listes chaînées */
-    queue **q = (queue **) calloc((int)store,sizeof(queue *));
+    queue *q = createQueue();
     if (!q) {
-        fprintf(stderr, "Error calling calloc to create a new queue for"
+        fprintf(stderr, "Error calling createQueue to create a new queue for"
                 " the new matrix\n");
         free(matrix);
         return NULL;
     }
     
-    // remplir la matrice
-    
     matrix->n = lin;
     matrix->m = col;
     matrix->lines = b;
-    matrix->pointers = q;
+    matrix->pointers = &q;
    
     return matrix;
 }
 
+int fillSmatrix(smatrix *sm, long i, long j, long val) {
+    if (!sm) {
+        fprintf(stderr, "Error calling fillSMmatrix : the matrix is not initialised\n");
+        return -1;
+    }
+    if ((i<0) || (j<0)) {
+        fprintf(stderr, "Error calling fillSMmatrix : negative index values\n");
+        return -1;
+    }
+    if (val == 0) {
+        fprintf(stderr, "Error calling fillSMmatrix : null value in sparse\n");
+        return 1;
+    }
+    
+    int err;
+    if (sm->lines) { // matrice en lignes
+        err = enqueue((sm->pointers[i]), j, val);
+        return err;
+    } else { // matrice en colonnes
+        return (enqueue((sm->pointers[j]), i, val));
+    }
+}
 
 
 
@@ -120,6 +143,7 @@ smatrix *product (smatrix *a, smatrix *b, bool lines) {
     }
     
     
+    // UTILISER LA FONTION CREATESMATRIX
     /* Création de la matrice qui va contenir le résultat de la multiplication */
     smatrix *r = (smatrix *)malloc(sizeof(smatrix));
     if (r==NULL) {
@@ -144,6 +168,7 @@ smatrix *product (smatrix *a, smatrix *b, bool lines) {
     r->pointers = (queue **)malloc(L*sizeof(queue *));
     if (r->pointers == NULL) {
         fprintf(stderr, "Error calling malloc to initialise the array of queues");
+        free(r);
         return NULL;
     }
     long i;
@@ -180,8 +205,6 @@ smatrix *product (smatrix *a, smatrix *b, bool lines) {
     /* Retour du résultat */
     return r;
 }
-
-
 
 
 void freeSmatrix (smatrix *sm) {
