@@ -13,13 +13,14 @@ smatrix *createSmatrix(char *s, bool b) {
     char *endptr;
     
     /* String dans lequel on copie la chaîne de caractères complète. */
-    char *dim1 = (char *) malloc((strlen(s)+1)*sizeof(char));
+    size_t length = strlen(s)+1;
+    char *dim1 = (char *) malloc(length*sizeof(char));
     if (!dim1) {
         fprintf(stderr, "Error calling malloc to handle the"
                 " dimensions' string\n");
         return NULL;
     }
-    strcpy(dim1, s);
+    strlcpy(dim1, s, length);
     
     /* Nombre de lignes. */
     lin = strtol(dim1, &endptr, 10);
@@ -35,13 +36,14 @@ smatrix *createSmatrix(char *s, bool b) {
     }
 
     /* String dans lequel on copie le reste de la chaîne de caractères. */
-    char *dim2 = (char *) malloc((strlen(endptr))*sizeof(char));
+    length = strlen(endptr)+1;
+    char *dim2 = (char *) malloc(length*sizeof(char));
     if (!dim2) {
         fprintf(stderr, "Error calling malloc to handle the"
                 " dimensions' string\n");
         return NULL;
     }
-    strcpy(dim2, endptr+1);
+    strlcpy(dim2, endptr+1, length);
     
     /* Nombre de colonnes */
     col = strtol(dim2, &endptr, 10);
@@ -279,4 +281,5 @@ void displaySmatrix (smatrix *sm) {
         printf("\n");
     }
 }
+
 

@@ -4,7 +4,6 @@
 #include "smatrix.h"
 
 // description
-int readLine(smatrix *, char *);
-
+int convertLines(smatrix *, FILE *);
 
 #endif

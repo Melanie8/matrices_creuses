@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include "smatrix.h"
 #include "queue.h"
+#include "read.h"
 
 int main(int argc, char *argv[]) {
     
@@ -57,14 +58,15 @@ int main(int argc, char *argv[]) {
     bool new_available = false;
     
     /* initialisation */
-    long line, col, val;
+    //long line, col, val;
 	ssize_t read;
 	size_t len = 0;
 	char *snippet = NULL;
     
     /* boucle sur les lignes pour les nouvelles matrices */
 	while ((read = getline(&snippet, &len, ides)) > 0) {
-        printf("passé le 1er read : %s\n", snippet);
+        printf("nouvelle matrice: ");
+        fwrite(snippet, read, 1, stdout);
         
         /* multiplication sur la variable */
         // mult
@@ -75,97 +77,68 @@ int main(int argc, char *argv[]) {
             printf("1e matrice pas encore creee\n");
             // matrice par lignes
             left = createSmatrix(snippet, true);
-            printf("1e matrice creee\n");
             if (!left) {
+                fprintf(stderr, "Error calling createSmatrix, no matrix created\n");
                 exit_status = EXIT_FAILURE;
-                free(snippet); snippet = NULL;
+                if (snippet) {
+                    free(snippet);
+                    snippet = NULL;
+                }
                 goto close_ifile;
             }
+            printf("1e matrice creee\n");
             current = left;
             left_already = true;
         } else {
-            printf("hehe\n");
-            printf("%s\n", snippet);
             // matrice par colonnes
             right = createSmatrix(snippet, false);
-            printf("2e matrice creee\n");
             if (!right) {
+                fprintf(stderr, "Error calling createSmatrix, no matrix created\n");
                 exit_status = EXIT_FAILURE;
                 if (snippet) {
-                    free(snippet); snippet = NULL;
+                    free(snippet);
+                    snippet = NULL;
                 }
                 goto free_matrixes;
             }
+            printf("2e matrice creee\n");
             current = right;
             new_available = true;
         }
         
-        /* boucle sur les lignes pour remplir la matrice créée */
-        for (line = 0; line < current->n ; line++) {
-            printf("line %ld du fichier en lecture \n", line);
-            /* on lit ligne par ligne */
-            read = getline(&snippet, &len, ides);
-            if (read <= 0) {
-                fprintf(stderr, "Error calling getline \n");
-                if (snippet) {
-                    free(snippet); snippet = NULL;
-                }
-                exit_status = EXIT_FAILURE;
-                goto free_matrixes;
+        /* remplissage de la matrice */
+        if (convertLines(current, ides) != 0) {
+            fprintf(stderr, "Error calling convertLines\n");
+            if (snippet) {
+                free(snippet);
+                snippet = NULL;
             }
-            printf("passé le 2e read : %s\n", snippet);
-            // buffer qui contient le reste de la ligne à convertir en nombres
-            char *endptr;
-            
-            // buffer qui contient la ligne en entier
-            char *content = (char *) malloc(strlen((snippet+1))*sizeof(char));
-            if (!content) {
-                fprintf(stderr, "Error calling malloc to read the file\n");
-                if (snippet) {
-                    free(snippet); snippet = NULL;
-                }
-                exit_status = EXIT_FAILURE;
-                goto free_matrixes;
-            }
-            strcpy(content, snippet);
-            printf("passé le copy : %s\n", snippet);
-            
-            /* boucle sur la ligne pour récupérer les valeurs */
-            for (col = 0; col < current->m; col++) {
-                printf("col %ld du fichier en lecture \n", col);
-                val = strtol(content, &endptr, 10);
-                
-                if (val == 0) {
-                    // A REVOIR
-                    // if the value is 0, do not enqueue
-                } else {
-                    printf("appel de fill avec val %ld\n", val);
-                    
-                    if (fillSmatrix(current, line, col, val) != 0) {
-                        fprintf(stderr, "Error calling fillSMmatrix\n");
-                        if (snippet) {
-                            free(snippet); snippet = NULL;
-                        }
-                        if (content) {
-                            free(content); content = NULL;
-                        }
-                        exit_status = EXIT_FAILURE;
-                        goto free_matrixes;
-                    }
-                }
-                
-                // copy the rest of the line into the buffer
-                strcpy(content, endptr);
-            }
-            free(content); content = NULL;
+            exit_status = EXIT_FAILURE;
         }
+
     }
-    free(snippet); snippet = NULL;
     
+    free(snippet);
+    snippet = NULL;
     
+    // modifier
     displaySmatrix(left);
     displaySmatrix(right);
     displaySmatrix(current);
+    
+    if (left->lines) {
+        printf("\nmatrice en lignes\n");
+    }
+    long t;
+    for (t=0; t<left->n; t++) {
+        printf("ligne %ld\n", t);
+        node *now;
+        for (now = left->pointers[t]->first; now!=NULL; now = now->next) {
+            printf("j: %ld val: %ld   ", now->j, now->v);
+        }
+        printf("\n");
+    }
+    printf("\n");
     
     
     /* fichier de sortie optionnel */

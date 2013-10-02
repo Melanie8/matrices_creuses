@@ -14,15 +14,16 @@
  *
  * Ensuite, nous enregistrons son contenu sous la forme d'un tableau de queues
  * (pointers). Le ième élément de ce tableau contient une queue dont les noeuds
- * représentent les éléments non nul de la ième ligne. Chaque noeud contient une
- * valeur v, un indice j et un pointeur vers le noeud suivant. Dans ce cas-ci, 
- * pointers[0] contient donc un noeud (v=1, j=1) et pointers [1] contient 
- * deux noeuds (v=1, j=0) et (v=1, j=1).
+ * représentent les éléments non nul de la ième ligne. Chaque noeud contient
+ * une valeur v, un indice j et un pointeur vers le noeud suivant. Dans ce 
+ * cas-ci, pointers[0] contient donc un noeud (v=1, j=1) et pointers [1]
+ * contient deux noeuds (v=1, j=0) et (v=1, j=1).
  *
- * Pour plus de facilité lors de la multiplication de deux matrices A et B. Nous
- * avons décidé d'encoder B par colonne et non par ligne. C'est pourquoi nous avons 
- * ajouté un booléen lines qui vaut 1 si la matrice est encodée par lignes et 0 si
- * elle est encodée par colonnes.
+ * Pour plus de facilité lors de la multiplication de deux matrices A et B.
+ * Nous
+ * avons décidé d'encoder B par colonne et non par ligne. C'est pourquoi nous
+ * avons ajouté un booléen lines qui vaut 1 si la matrice est encodée par
+ * lignes et 0 si elle est encodée par colonnes.
  */
 typedef struct smatrix {
     long n;
@@ -70,8 +71,8 @@ int compatibleDimensions (smatrix *, smatrix *);
  * 2ème par colonnes. Le booléen passé en argument spécifie si l'on veut que le
  * résulat soit encodé par lignes ou par colonnes.
  *
- * Renvoie un pointeur vers la matrice résultante. En cas d'erreur (pointeur NULL,
- * dimensions incompatibles, échec d'un malloc), retourne NULL.
+ * Renvoie un pointeur vers la matrice résultante. En cas d'erreur
+ * (pointeur NULL, dimensions incompatibles, échec d'un malloc), retourne NULL.
  */
 smatrix *product (smatrix *, smatrix *, bool);
 
