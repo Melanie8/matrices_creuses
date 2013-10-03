@@ -38,14 +38,17 @@ int convert_lines(smatrix *sm, FILE *f) {
             }
             return -1;
         }
+        /* retient l'adresse de départ de l'espace alloué */
+        char *remember = content;
+        
+        /* copie la ligne courante dans le buffer */
         strlcpy(content, line, length);
         
         /* Boucle sur les colonnes */
-        char *endptr;
         for (j=0; j<sm->m; j++) {
             
             /* convertit le char en long */
-            val = strtol(content, &endptr, 10);
+            val = strtol(content, &content, 10);
             count++;
             
             if (val == 0) {
@@ -60,16 +63,13 @@ int convert_lines(smatrix *sm, FILE *f) {
                         free(line); line = NULL;
                     }
                     if (content) {
-                        free(content); content = NULL;
+                        free(remember); remember = NULL;
                     }
                     return -1;
                 }
             }
-            
-            /* copie le reste de la ligne dans le buffer */
-            strlcpy(content, endptr, strlen(content)+1);
         }
-        free(content); content = NULL;
+        free(remember); remember = NULL;
     }
     free(line); line = NULL;
     

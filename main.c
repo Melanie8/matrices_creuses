@@ -14,6 +14,8 @@
 
 int main(int argc, char *argv[]) {
     
+    printf(" \n\n$$$$$$$$$$$$$ DEBUT DE CHEZ DEBUT $$$$$$$$$$$$$$$ \n\n");
+    
     char *ifile = NULL; /* nom du fichier d'entrée */
     FILE *ides = NULL; /* descripteur de fichier associé au fichier d'entrée */
     char *ofile = NULL; /* nom du fichier de sortie */

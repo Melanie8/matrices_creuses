@@ -84,9 +84,9 @@ smatrix *create_smatrix(char *s, bool b) {
     }
     strlcpy(dim1, s, length);
     
+    
     /* Nombre de lignes */
     lin = strtol(dim1, &endptr, 10);
-    free(dim1);
     
     /* Le format n'est pas respecté */
     if(*endptr !='x')
@@ -94,6 +94,7 @@ smatrix *create_smatrix(char *s, bool b) {
         fprintf(stderr,"Error :  the file encoding is incorrect. Each matrix\n"
                 "\t should start with a dimensions' line as follows :\n"
                 "\t LxC where L and C are the number of lines and columns. \n");
+        free(dim1); dim1 = NULL;
         return NULL;
     }
 
@@ -103,20 +104,26 @@ smatrix *create_smatrix(char *s, bool b) {
     if (!dim2) {
         fprintf(stderr, "Error calling malloc to handle the"
                 " dimensions' string\n");
+        free(dim1); dim1 = NULL;
         return NULL;
     }
     strlcpy(dim2, endptr+1, length);
     
     /* Nombre de colonnes */
     col = strtol(dim2, &endptr, 10);
-    free(dim2);
     if (*endptr != '\n') {
         fprintf(stderr,"Error :  the file encoding is incorrect. Each matrix\n"
                 "\t should start with a dimensions' line as follows :\n"
                 "\t LxC where L and C are the number of lines and columns. \n"
                 "\t Something was written beyond the second dimension.\n");
+        free(dim1); dim1 = NULL;
+        free(dim2); dim2 = NULL;
         return NULL;
     }
+    
+    free(dim1); dim1 = NULL;
+    free(dim2); dim2 = NULL;
+    
     
     /* Initialisation de la matrice */
     return allocate_smatrix(lin, col, b);
