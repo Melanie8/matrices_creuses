@@ -1,3 +1,10 @@
+/*
+ * Written by :
+ * Lena Peschke <lena.peschke@student.uclouvain.be>
+ * Mélanie Sedda <melanie.sedda@student.uclouvain.be>
+ * October 2013
+ */
+
 #ifndef _smatrix_h
 #define _smatrix_h
 
@@ -20,9 +27,8 @@
  * contient deux noeuds (v=1, j=0) et (v=1, j=1).
  *
  * Pour plus de facilité lors de la multiplication de deux matrices A et B.
- * Nous
- * avons décidé d'encoder B par colonne et non par ligne. C'est pourquoi nous
- * avons ajouté un booléen lines qui vaut 1 si la matrice est encodée par
+ * Nous avons décidé d'encoder B par colonne et non par ligne. C'est pourquoi
+ * nous avons ajouté un booléen lines qui vaut 1 si la matrice est encodée par
  * lignes et 0 si elle est encodée par colonnes.
  */
 typedef struct smatrix_t {
@@ -74,4 +80,3 @@ smatrix *smatrix_product (smatrix *, smatrix *, bool);
 void free_smatrix (smatrix *);
 
 #endif
-

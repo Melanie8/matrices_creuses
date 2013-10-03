@@ -1,3 +1,10 @@
+/*
+ * Written by :
+ * Lena Peschke <lena.peschke@student.uclouvain.be>
+ * Mélanie Sedda <melanie.sedda@student.uclouvain.be>
+ * October 2013
+ */
+
 #ifndef _read_h
 #define _read_h
 
@@ -15,8 +22,8 @@
 long convert_lines(smatrix *, FILE *);
 
 
-/* Ecrit la matrice donnée en argument sur le stream donné. Il peut s'agir d'un
- * fichier ou de la sortie std.
+/* Ecrit la matrice donnée en argument sur le stream donné. Il peut s'agir
+ * d'un fichier ou de la sortie std.
  *
  * Retourne -1 en cas d'erreur, 0 sinon.
  */

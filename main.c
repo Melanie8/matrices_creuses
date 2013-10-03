@@ -1,3 +1,10 @@
+/*
+ * Written by :
+ * Lena Peschke <lena.peschke@student.uclouvain.be>
+ * Mélanie Sedda <melanie.sedda@student.uclouvain.be>
+ * October 2013
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -14,8 +21,6 @@
 
 int main(int argc, char *argv[]) {
     
-    printf(" \n\n$$$$$$$$$$$$$ DEBUT DE CHEZ DEBUT $$$$$$$$$$$$$$$ \n\n");
-    
     char *ifile = NULL; /* nom du fichier d'entrée */
     FILE *ides = NULL; /* descripteur de fichier associé au fichier d'entrée */
     char *ofile = NULL; /* nom du fichier de sortie */
@@ -23,7 +28,9 @@ int main(int argc, char *argv[]) {
     int exit_status = EXIT_SUCCESS; /* valeur de retour de la main */
     
     
-    /* Récupération des arguments */
+    /* 
+     * Récupération des arguments
+     */
     if (argc < 2) {
         fprintf(stderr, "Error : too few arguments\n");
         exit_status = EXIT_FAILURE;
@@ -140,13 +147,15 @@ int main(int argc, char *argv[]) {
             /* libération de la mémoire des matrices qui ne sont plus utiles */
             free_smatrix(left); left = NULL;
             free_smatrix(right); right = NULL;
-            left = result; // stocke le résultat de la multiplication dans left
+            
+            /* stocke le résultat dans left pour la prochaine multiplication */
+            left = result; 
             result = NULL;
-            left_already = true; // inutile
             available--;
         }
     }
     free(snippet); snippet = NULL;
+    
     
     /*
      * Ecriture du résultat final
@@ -169,6 +178,10 @@ int main(int argc, char *argv[]) {
         goto close_ofile;
     }
     
+    /*
+     * Terminaison du programme
+     */
+    
 close_ofile:
     /* fermeture du fichier de sortie, s'il existe */
     if (ofile) {
@@ -179,11 +192,8 @@ close_ofile:
     }
     
 free_matrixes:
-    /* libération de la mémoire des matrices */
-    free_smatrix(result); // juste pour être sûr
-    free_smatrix(right); // juste pour être sûr
+    /* libération de la mémoire de la matrice */
     free_smatrix(left);
-    printf("Si tu arrives ici, c'est bien :)\n"); // ENLEVER
     
 close_ifile:
     /* fermeture du fichier d'entrée */
