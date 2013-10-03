@@ -3,38 +3,41 @@
 #include <string.h>
 #include "queue.h"
 
-queue *createQueue() {
-    /* On alloue de la mémoire pour la nouvelle file. */
+queue *create_queue() {
+    /* Alloue de la mémoire pour la nouvelle file */
     queue *q = (queue *)calloc(1, sizeof(queue));
     if (!q) {
-        fprintf(stderr, "Error calling calloc to initialise a queue");
+        fprintf(stderr, "Error calling create_queue : calloc to initialise a"
+                " queue failed");
         return NULL;
     }
     q->first = NULL;
     q->last = NULL;
-    /* On renvoie la nouvelle file. */
+    
+    /* Renvoie la nouvelle file */
     return q;
 }
 
 int enqueue(queue *q, long j, long v) {
-    /* On vérifie que q, est non NULL. */
+    /* Vérifie que q est non NULL */
     if (!q) {
 		fprintf(stderr, "Error calling enqueue : the queue is NULL \n");
         return -1;
     }
     
-    /* On alloue de la mémoire pour le nouveau noeud. */
+    /* Alloue de la mémoire pour le nouveau noeud */
     node *new = (node *)calloc(1, sizeof(node));
     if (!new) {
-        fprintf(stderr, "Error calling calloc to create a new node");
+        fprintf(stderr, "Error calling enqueue : calloc to create a"
+                " new node failed\n");
         return -1;
     }
 	
-	/* On enregistre j et v dans le noeud */
+	/* Enregistre j et v dans le noeud */
 	new->j = j;
     new->v = v;
     
-    /* On modifie les liens de la file. Si la file est vide, il faut aussi
+    /* Modifie les liens de la file. Si la file est vide, il faut aussi
 	 * modifier 'first', sinon seul 'last' change. */
     if (!(q->first)) {
         q->first = new;
@@ -47,8 +50,8 @@ int enqueue(queue *q, long j, long v) {
     return 0;
 }
 
-void freeQueue(queue *q) {
-    /* On vérifie que q est non NULL. */
+void free_queue(queue *q) {
+    /* Vérifie que q est non NULL. */
     if (!q) {
         return;
 	/* Si q est vide, il faut juste libérer la file. */
