@@ -202,41 +202,6 @@ smatrix *smatrix_product (smatrix *a, smatrix *b, bool lines) {
         fprintf(stderr, "Error calling smatrix_product : malloc failed\n");
         return NULL;
     }
-    
-    // UTILISER LA FONTION CREATESMATRIX
-    /*
-    smatrix *r = (smatrix *)malloc(sizeof(smatrix));
-    if (!r) {
-        fprintf(stderr, "Error calling malloc to initialise the smatrix\n");
-        return NULL;
-    } 
-    long nLines = a->n;
-    long nColumns = b->m;
-    r->n = nLines;
-    r->m = nColumns;
-    r->lines = lines;
-    long L, l;
-    if (lines) {
-        L = nLines;
-        l = nColumns;
-    }
-    else {
-        L = nColumns;
-        l = nLines;
-    }
-    
-    r->pointers = (queue **)malloc(L*sizeof(queue *));
-    if (r->pointers == NULL) {
-        fprintf(stderr, "Error calling malloc to initialise the array of queues\n");
-        free(r);
-        return NULL;
-    }
-    long i;
-    for (i = 0; i<L; i++) {
-        (r->pointers)[i] = createQueue();
-    }
-     */
-    // FIN DE LA FONCTION CREATEMATRIX
 
     /* Remplissage de la matrice */
     long i;
