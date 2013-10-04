@@ -89,7 +89,7 @@ smatrix *create_smatrix(char *s, bool b) {
                 " dimensions' string\n");
         return NULL;
     }
-    strlcpy(dim1, s, length);
+    strncpy(dim1, s, length);
     
     
     /* Nombre de lignes */
@@ -114,7 +114,7 @@ smatrix *create_smatrix(char *s, bool b) {
         free(dim1); dim1 = NULL;
         return NULL;
     }
-    strlcpy(dim2, endptr+1, length);
+    strncpy(dim2, endptr+1, length);
     
     /* Nombre de colonnes */
     col = strtol(dim2, &endptr, 10);

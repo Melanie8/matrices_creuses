@@ -49,7 +49,7 @@ int convert_lines(smatrix *sm, FILE *f) {
         char *remember = content;
         
         /* copie la ligne courante dans le buffer */
-        strlcpy(content, line, length);
+        strncpy(content, line, length);
         
         /* Boucle sur les colonnes */
         for (j=0; j<sm->m; j++) {
