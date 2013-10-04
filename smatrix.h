@@ -1,8 +1,15 @@
+/*
+ * Written by :
+ * Lena Peschke <lena.peschke@student.uclouvain.be>
+ * Mélanie Sedda <melanie.sedda@student.uclouvain.be>
+ * October 2013
+ */
+
 #ifndef _smatrix_h
 #define _smatrix_h
 
-#include "queue.h"
 #include <stdbool.h>
+#include "queue.h"
 
 /* Exemple illustrant notre encodage d'une matrice creuse :
  *
@@ -20,18 +27,16 @@
  * contient deux noeuds (v=1, j=0) et (v=1, j=1).
  *
  * Pour plus de facilité lors de la multiplication de deux matrices A et B.
- * Nous
- * avons décidé d'encoder B par colonne et non par ligne. C'est pourquoi nous
- * avons ajouté un booléen lines qui vaut 1 si la matrice est encodée par
+ * Nous avons décidé d'encoder B par colonne et non par ligne. C'est pourquoi
+ * nous avons ajouté un booléen lines qui vaut 1 si la matrice est encodée par
  * lignes et 0 si elle est encodée par colonnes.
  */
-typedef struct smatrix {
+typedef struct smatrix_t {
     long n;
     long m;
     bool lines;
 	queue **pointers;
 } smatrix;
-
 
 
 /* Crée une nouvelle matrice creuse à partir d'un char* de dimensions sous
@@ -40,8 +45,10 @@ typedef struct smatrix {
  * Le booléen indique si la matrice est stockée par lignes (true)
  * ou par colonnes (false).
  *
- * Renvoie un pointeur vers la matrice. En cas d'erreur, retourne NULL. */
-smatrix *createSmatrix (char *, bool);
+ * Renvoie un pointeur vers la matrice. En cas d'erreur, retourne NULL.
+ */
+smatrix *create_smatrix (char *, bool);
+
 
 /* Remplit une case de la matrice creuse. Le pointeur fait référence à une
  * smatrix initialisée par la fonction createSmatrix. Les trois valeurs long
@@ -51,20 +58,11 @@ smatrix *createSmatrix (char *, bool);
  * la jème colonne. Dans les deux cas, il s'agit du tableau de listes chaînées
  * de la matrice creuse.
  *
- * Renvoit -1 si le pointeur est nul
+ * Renvoit -1 si le pointeur est nul ou
  *            si une des valeurs d'index est négative
  *          1 si la valeur du champ est nulle
  */
-
-int fillSmatrix(smatrix *, long, long, long);
-
-
-/* Renvoit -1 si au moins un pointeur est nul
- *          1 si les deux matrices peuvent être multipliées
- *          0 sinon
- */
-int compatibleDimensions (smatrix *, smatrix *);
-
+int fill_smatrix(smatrix *, long, long, long);
 
 
 /* Multiplie deux matrices creuses, dont la 1ère a été encodée par lignes et la 
@@ -74,21 +72,11 @@ int compatibleDimensions (smatrix *, smatrix *);
  * Renvoie un pointeur vers la matrice résultante. En cas d'erreur
  * (pointeur NULL, dimensions incompatibles, échec d'un malloc), retourne NULL.
  */
-smatrix *product (smatrix *, smatrix *, bool);
-
+smatrix *smatrix_product (smatrix *, smatrix *, bool);
 
 
 /* Supprime une matrice creuse de la mémoire.
  */
-void freeSmatrix (smatrix *);
-
-
-
-/* Affiche une matrice creuse (avec tous les 0) sur la sortie standard
- * ligne par ligne pour une matrice encodée par lignes
- * colonne par colonne pour une matrice encodée par colonnes
- */
-void displaySmatrix (smatrix *);
+void free_smatrix (smatrix *);
 
 #endif
-

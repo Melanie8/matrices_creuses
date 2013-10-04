@@ -1,74 +1,36 @@
+/*
+ * Written by :
+ * Lena Peschke <lena.peschke@student.uclouvain.be>
+ * Mélanie Sedda <melanie.sedda@student.uclouvain.be>
+ * October 2013
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "smatrix.h"
 
-// à compléter et améliorer, pas de 2ble code
-smatrix *createSmatrix(char *s, bool b) {
+/* Alloue de l'espace en mémoire pour créer une nouvelle matrice creuse.
+ * lin et col indiquent le nombre de lignes et de colonnes respectivement,
+ * b indique si la matrice est stockée par lignes (true)
+ * ou par colonnes (false).
+ *
+ * Renvoie un pointeur vers la matrice. En cas d'erreur, retourne NULL.
+ */
+smatrix *allocate_smatrix(long lin, long col, bool b) {
     
-    /* On extrait les dimensions de la matrice de s.
-       Elles doivent être sous la forme 'lignes'x'colonnes'. */
-    
-    long lin, col;
-    char *endptr;
-    
-    /* String dans lequel on copie la chaîne de caractères complète. */
-    size_t length = strlen(s)+1;
-    char *dim1 = (char *) malloc(length*sizeof(char));
-    if (!dim1) {
-        fprintf(stderr, "Error calling malloc to handle the"
-                " dimensions' string\n");
-        return NULL;
-    }
-    strlcpy(dim1, s, length);
-    
-    /* Nombre de lignes. */
-    lin = strtol(dim1, &endptr, 10);
-    free(dim1);
-    
-    /* Le format n'est pas respecté. */
-    if(*endptr !='x')
-    {
-        fprintf(stderr,"Error :  the file encoding is incorrect. Each matrix\n"
-                "\t should start with a dimensions' line as follows :\n"
-                "\t LxC where L and C are the number of lines and columns. \n");
-        return NULL;
-    }
-
-    /* String dans lequel on copie le reste de la chaîne de caractères. */
-    length = strlen(endptr)+1;
-    char *dim2 = (char *) malloc(length*sizeof(char));
-    if (!dim2) {
-        fprintf(stderr, "Error calling malloc to handle the"
-                " dimensions' string\n");
-        return NULL;
-    }
-    strlcpy(dim2, endptr+1, length);
-    
-    /* Nombre de colonnes */
-    col = strtol(dim2, &endptr, 10);
-    free(dim2);
-    if (*endptr != '\n') {
-        fprintf(stderr,"Error :  the file encoding is incorrect. Each matrix\n"
-                "\t should start with a dimensions' line as follows :\n"
-                "\t LxC where L and C are the number of lines and columns. \n"
-                "\t Something was written beyond the second dimension.\n");
-        return NULL;
-    }
-    
-    /* On vérifie que les dimensions sont cohérentes. */
+    /* Vérifie que les dimensions sont cohérentes */
     if ((lin < 1) || (col < 1)) {
-        fprintf(stderr, "Error :  your matrix has dimensions %ld x %ld\n",
-                lin, col);
+        fprintf(stderr, "Error calling allocate_smatrix :"
+                " your matrix has dimensions %ldx%ld\n", lin, col);
         return NULL;
     }
     
-    
-    /* On crée la matrice. */
-    
-    smatrix *matrix = (smatrix *) malloc(sizeof(smatrix));
+    /* Crée la matrice */
+    smatrix *matrix = (smatrix *)malloc(sizeof(smatrix));
     if (!matrix) {
-        fprintf(stderr, "Error calling malloc to create a new matrix\n");
+        fprintf(stderr, "Error calling allocate_smatrix :"
+                " malloc failed\n");
         return NULL;
     }
     
@@ -83,18 +45,20 @@ smatrix *createSmatrix(char *s, bool b) {
     /* Initialisation du tableau de listes chaînées */
     queue **q = (queue **)calloc((int) store, sizeof(queue *));
     if (!q) {
-        fprintf(stderr, "Error calling calloc to initialize the queue array for the matrix\n");
-        freeSmatrix(matrix);
+        fprintf(stderr, "Error calling allocate_smatrix :"
+                " calloc to initialize the queue array failed\n");
+        free_smatrix(matrix);
         return NULL;
     }
     
     /* Initialisation de toutes les listes chaînées */
     long i;
-    for (i=0; i <store; i++) {
-        q[i] = createQueue();
+    for (i=0; i<store; i++) {
+        q[i] = create_queue();
         if (!q[i]) {
-            fprintf(stderr, "Error calling malloc to initialize queue %ld of the matrix\n", i);
-            freeSmatrix(matrix);
+            fprintf(stderr, "Error calling allocate_smatrix :"
+                    " malloc to initialize queue %ld failed\n", i);
+            free_smatrix(matrix);
             return NULL;
         }
     }
@@ -104,11 +68,76 @@ smatrix *createSmatrix(char *s, bool b) {
     matrix->m = col;
     matrix->lines = b;
     matrix->pointers = q;
-   
+    
+    /* Retourne une matrice initialisée */
     return matrix;
 }
 
-int fillSmatrix(smatrix *sm, long i, long j, long val) {
+
+smatrix *create_smatrix(char *s, bool b) {
+    
+    /* Extrait les dimensions de la matrice de s.
+       Elles doivent être sous la forme 'lignes'x'colonnes'. */
+    long lin, col;
+    char *endptr;
+    
+    /* String dans lequel on copie la chaîne de caractères complète */
+    size_t length = strlen(s)+1;
+    char *dim1 = (char *) malloc(length*sizeof(char));
+    if (!dim1) {
+        fprintf(stderr, "Error calling malloc to handle the"
+                " dimensions' string\n");
+        return NULL;
+    }
+    strlcpy(dim1, s, length);
+    
+    
+    /* Nombre de lignes */
+    lin = strtol(dim1, &endptr, 10);
+    
+    /* Le format n'est pas respecté */
+    if(*endptr !='x')
+    {
+        fprintf(stderr,"Error :  the file encoding is incorrect. Each matrix\n"
+                "\t should start with a dimensions' line as follows :\n"
+                "\t LxC where L and C are the number of lines and columns. \n");
+        free(dim1); dim1 = NULL;
+        return NULL;
+    }
+
+    /* String dans lequel on copie le reste de la chaîne de caractères */
+    length = strlen(endptr)+1;
+    char *dim2 = (char *) malloc(length*sizeof(char));
+    if (!dim2) {
+        fprintf(stderr, "Error calling malloc to handle the"
+                " dimensions' string\n");
+        free(dim1); dim1 = NULL;
+        return NULL;
+    }
+    strlcpy(dim2, endptr+1, length);
+    
+    /* Nombre de colonnes */
+    col = strtol(dim2, &endptr, 10);
+    if (*endptr != '\n') {
+        fprintf(stderr,"Error :  the file encoding is incorrect. Each matrix\n"
+                "\t should start with a dimensions' line as follows :\n"
+                "\t LxC where L and C are the number of lines and columns. \n"
+                "\t Something was written beyond the second dimension.\n");
+        free(dim1); dim1 = NULL;
+        free(dim2); dim2 = NULL;
+        return NULL;
+    }
+    
+    free(dim1); dim1 = NULL;
+    free(dim2); dim2 = NULL;
+    
+    
+    /* Initialisation de la matrice */
+    return allocate_smatrix(lin, col, b);
+}
+
+
+int fill_smatrix(smatrix *sm, long i, long j, long val) {
     if (!sm) {
         fprintf(stderr, "Error calling fillSMmatrix : the matrix is not initialised\n");
         return -1;
@@ -122,52 +151,49 @@ int fillSmatrix(smatrix *sm, long i, long j, long val) {
         return 1;
     }
     
-    int err;
-    if (sm->lines) { // matrice en lignes
-        err = enqueue((sm->pointers[i]), j, val);
-        return err;
-    } else { // matrice en colonnes
-        return (enqueue((sm->pointers[j]), i, val));
+    if (sm->lines) {
+        /* matrice stockée par lignes */
+        return  enqueue((sm->pointers[i]), j, val);
+    } else { /* matrice stockée par colonnes */
+        return enqueue((sm->pointers[j]), i, val);
     }
 }
 
 
-
-int compatibleDimensions (smatrix *a, smatrix *b) {
-    if (a==NULL || b==NULL)
+/* Teste si 2 matrices peuvent être multipliées.
+ *
+ * Renvoit -1 si au moins un pointeur est nul
+ *          1 si les deux matrices peuvent être multipliées
+ *          0 sinon
+ */
+int compatible_dimensions (smatrix *a, smatrix *b) {
+    if ((!a) || (!b)) {
         return -1;
+    }
+    
     return ((a->m)==(b->n));
 }	
 
 
-
-smatrix *product (smatrix *a, smatrix *b, bool lines) {
+smatrix *smatrix_product (smatrix *a, smatrix *b, bool lines) {
     /* Test des dimensions */
-    int cd = compatibleDimensions(a,b);
+    int cd = compatible_dimensions(a,b);
     // pointeur(s) NULL
     if (cd == -1) {
-        fprintf(stderr, "Error : one of the pointers passed to the product fonction is NULL\n");
+        fprintf(stderr, "Error calling smatrix_product :"
+                " one of the pointers passed to smatrix_product is NULL\n");
         return NULL;
     }
     // dimensions incompatibles
     if (cd == 0) {
-        fprintf(stderr, "Error : you're trying to multiply matrices with incompatible dimensions\n");
+        fprintf(stderr, "Error calling smatrix_product : you're trying to"
+                " multiply matrices with incompatible dimensions\n");
         return NULL;
     }
     
-    
-    // UTILISER LA FONTION CREATESMATRIX
-    /* Création de la matrice qui va contenir le résultat de la multiplication */
-    smatrix *r = (smatrix *)malloc(sizeof(smatrix));
-    if (r==NULL) {
-        fprintf(stderr, "Error calling malloc to initialise the smatrix\n");
-        return NULL;
-    }
+    /* Création de la matrice contenant le résultat de la multiplication */
     long nLines = a->n;
     long nColumns = b->m;
-    r->n = nLines;
-    r->m = nColumns;
-    r->lines = lines;
     long L, l;
     if (lines) {
         L = nLines;
@@ -178,18 +204,14 @@ smatrix *product (smatrix *a, smatrix *b, bool lines) {
         l = nLines;
     }
     
-    r->pointers = (queue **)malloc(L*sizeof(queue *));
-    if (r->pointers == NULL) {
-        fprintf(stderr, "Error calling malloc to initialise the array of queues\n");
-        free(r);
+    smatrix *r = allocate_smatrix(nLines, nColumns, lines);
+    if (!r) {
+        fprintf(stderr, "Error calling smatrix_product : malloc failed\n");
         return NULL;
-    }
-    long i;
-    for (i = 0; i<L; i++) {
-        (r->pointers)[i] = createQueue();
     }
 
     /* Remplissage de la matrice */
+    long i;
     long j, k, newV;
     for (i=0; i<nLines; i++) {
         for (j= 0; j<nColumns; j++) {
@@ -197,36 +219,46 @@ smatrix *product (smatrix *a, smatrix *b, bool lines) {
             node *currentA;
             node *currentB;
             
-            // on parcourt la ligne i et la colonne j à la recherche d'éléments à multiplier
-            for (currentA = (a->pointers)[i]->first; currentA != NULL; currentA = currentA->next) {
+            /* parcourt la ligne i et la colonne j à la recherche
+             * d'éléments à multiplier */
+            for (currentA = (a->pointers)[i]->first;
+                 currentA != NULL;
+                 currentA = currentA->next) {
+                
                 k = currentA->j;
-                for(currentB = (b->pointers)[j]->first; currentB != NULL && currentB->j < k; currentB = currentB->next) {}
+                
+                for(currentB = (b->pointers)[j]->first;
+                    currentB != NULL && currentB->j < k;
+                    currentB = currentB->next) {
+                    
+                    /* ne fait rien */
+                
+                }
                 if (currentB != NULL && currentB->j==k)
                     newV += (currentA->v)*(currentB->v);
             }
-            // on ne rajoute un noeud à la queue que si sa valeur n'est pas nulle
+            /* ne rajoute un noeud à la queue que si sa valeur est non-nulle */
             if (newV != 0) {
                 if (lines)
                     enqueue((r->pointers)[i], j, newV);
                 else
                     enqueue((r->pointers)[j], i, newV);
             }
-            
         }
     }
     
-    /* Retour du résultat */
+    /* Retourne la matrice résultante */
     return r;
 }
 
 
-void freeSmatrix (smatrix *sm) {
-    /* Matrice NULL -> rien à faire */
+void free_smatrix (smatrix *sm) {
+    /* Matrice NULL: ne rien à faire */
     if (!sm) {
         return;
     }
     
-    /* Libérer pointers si il est non NULL */
+    /* Libère pointers si il est non NULL */
     if (sm->pointers) {
         long i, l;
         if (sm->lines) {
@@ -234,52 +266,16 @@ void freeSmatrix (smatrix *sm) {
         } else {
             l = sm->m;
         }
+        /* libère chaque queue de pointers */
         for (i=0; i<l; i++) {
             if (sm->pointers[i]) {
-                freeQueue(sm->pointers[i]);
+                free_queue(sm->pointers[i]);
                 sm->pointers[i] = NULL;
             }
         }
         free(sm->pointers);
     }
-    /* Libérer la matrice */
+    
+    /* Libère la matrice */
     free(sm);
 }
-
-
-
-void displaySmatrix (smatrix *sm) {
-    if (!sm) {
-        printf("Le pointeur passé en argument est NULL\n");
-        return;
-    }
-    printf("début de DISPLAY:\n");
-    bool lines = sm->lines;
-    long n, m;
-    if (lines) {
-        n = sm->n;
-        m = sm->m;
-    }
-    else {
-        n = sm->m;
-        m = sm->n;
-    }
-    long i, j, k;
-    for (i=0; i<n; i++) {
-        node *current;
-        j = -1;
-        for (current = sm->pointers[i]->first; current!=NULL; current = current->next) {
-            for (k=1; k<(current->j)-j; k++) {
-                printf("0 ");
-            }
-            printf("%ld ", current->v);
-            j = current->j;
-        }
-        for (k=1; k < m-j; k++) {
-            printf("0 ");
-        }
-        printf("\n");
-    }
-}
-
-
