@@ -184,6 +184,17 @@ nous avons encodé notre matrice $M_1$ en lignes et toutes les autres en colonne
 
 Nous n'avons pas multithreadé notre programme mais si nous l'avions fait, nous aurions effectué le plus de produit du type $(M_1 M_2)$, $(M_3 M_4)$, $(M_5 M_6)$, ... en même temps en encodant les matrices d'indices pairs en colonnes. Le résultat de $(M_1 M_2)$ serait alors encodé en lignes, $(M_3 M_4)$ en colonnes, etc. Dans cette optique, nous avons permis de stipuler à la fonction effectuant le produit de deux matrices creuses si nous voulons que le résultat du produit soit encodé en lignes ou en colonnes mais comme nous n'avons finalement pas multithreadé notre programme, nous l'utilisons exclusivement pour rendre un résultat en lignes.
 
+\subsection{Détails techniques}
+Nous avons considéré que nos fichiers d'entrées contenaient des matrices du type\\
+\texttt{
+2x3\\
+0 1 0 \\
+1 0 1\\}
+et que le fichier terminait par maximum un retour à la ligne. Si il y en a plus, nous cherchons une prochaine matrice.
+
+\subsection{Valgrind}
+
+Nous avons testé notre programme avec \texttt{Valgrind}. Notre seul problème est qu'il reste $33$ blocks "still reachable". Nous avons testé avec plusieurs fichiers d'entrée différents et ce nombre de 33 blocks semble constant. Le problème pourrait donc provenir de fonctions de la libraire standard que nous appelons .
 
 \section{Mesures de performance et interprétations}
 
@@ -225,7 +236,11 @@ Nous avons ensuite tracé un graphe logarithmique de ces résultats en utilisant
 
 On remarque tout d'abord que pour des matrices pleines, le temps d'exécution ne dépend pas du nombre d'éléments non nuls dans la matrice. Cela est tout à fait logique car on utilise un simple tableau qu'il faut de toutes façons parcourir dans son entièreté lorsqu'on veut le multiplier par une autre matrice. Pour des matrices creuses par contre, le nombre d'éléments non nuls a de l'influence car nos files vont alors avoir plus de noeuds qu'il va falloir parcourir pour effectuer un produit.\\
 
-On remarque ensuite que jusqu'à 2,7\% d'éléments non nuls, il était nettement plus avantageux (environ $7$ fois plus rapide) d'utiliser des matrices creuses tandis que lorsqu'il y en avait 8,1\%, c'était environ $2,5$ fois plus lent. Cela est dû au fait que les structures de données utilisées pour nos matrices creuses sont 
+On remarque ensuite que jusqu'à 2,7\% d'éléments non nuls, il était nettement plus avantageux (environ $7$ fois plus rapide) d'utiliser des matrices creuses tandis que lorsqu'il y en avait 8,1\%, c'était environ $2,5$ fois plus lent. Il n'est donc intéressant d'utiliser des matrices creuses que lorsqu'il y a plus d'environ 95\% de zéros dans nos matrices.
+
+\subsection{Scénario 2 : variation de la taille de la matrice}
+
+\subsection{Fichier de test fourni}
 
 %\section{Performances}
 %\subsection{Fonctionnement}
