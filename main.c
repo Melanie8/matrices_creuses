@@ -18,8 +18,24 @@
 #include "smatrix.h"
 #include "queue.h"
 #include "read.h"
+#include <time.h>
+
+
+long int top_chrono;
+
+void demarrer_chrono() {
+    top_chrono = clock();
+}
+
+void stop_chrono() {
+    long int arret_chrono = clock();
+    fprintf(stderr, "Le calcul a pris %f secondes.\n",
+            (float)(arret_chrono - top_chrono) / CLOCKS_PER_SEC);
+}
 
 int main(int argc, char *argv[]) {
+    
+    demarrer_chrono();
     
     char *ifile = NULL; /* nom du fichier d'entrée */
     FILE *ides = NULL; /* descripteur de fichier associé au fichier d'entrée */
@@ -201,6 +217,8 @@ close_ifile:
         perror("close(input_file)");
         exit_status = EXIT_FAILURE;
     }
+    
+    stop_chrono();
     
 end:
     return exit_status;
