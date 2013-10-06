@@ -10,4 +10,7 @@
 \contentsline {paragraph}{Graphe}{3}
 \contentsline {paragraph}{Observations}{3}
 \contentsline {subsection}{\numberline {2.2}Sc\IeC {\'e}nario 2 : variation de la taille de la matrice}{4}
+\contentsline {paragraph}{Mesures}{4}
+\contentsline {paragraph}{Graphe}{4}
+\contentsline {paragraph}{Observations}{4}
 \contentsline {subsection}{\numberline {2.3}Fichier de test fourni}{4}

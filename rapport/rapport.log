@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2013.1.26)  6 OCT 2013 15:27
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2013.1.26)  6 OCT 2013 16:55
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -520,11 +520,7 @@ File: lstlang1.sty 2004/09/05 1.3 listings language file
 (/usr/local/texlive/2012/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
 )
-(./rapport.aux
-
-LaTeX Warning: Label `encodage' multiply defined.
-
-)
+(./rapport.aux)
 \openout1 = `rapport.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 78.
@@ -735,9 +731,6 @@ LaTeX Warning: Command \` invalid in math mode on input line 172.
 LaTeX Warning: Command \` invalid in math mode on input line 172.
 
 
-LaTeX Warning: Reference `encodage2' on page 1 undefined on input line 172.
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 172--173
 
  []
@@ -795,41 +788,59 @@ Underfull \hbox (badness 10000) in paragraph at lines 237--238
 
  []
 
-[3 <./taillecst-eps-converted-to.pdf>] 
+[3 <./taillecst-eps-converted-to.pdf>]
+Underfull \hbox (badness 10000) in paragraph at lines 246--247
+
+ []
+
+Package epstopdf Info: Source file: <pourccst.eps>
+(epstopdf)                    date: 2013-10-06 16:39:46
+(epstopdf)                    size: 10241 bytes
+(epstopdf)             Output file: <pourccst-eps-converted-to.pdf>
+(epstopdf)                    date: 2013-10-06 16:44:47
+(epstopdf)                    size: 6483 bytes
+(epstopdf)             Command: <repstopdf --outfile=pourccst-eps-converted-to.
+pdf pourccst.eps>
+(epstopdf)             \includegraphics on input line 266.
+Package epstopdf Info: Output file is already uptodate.
+<pourccst-eps-converted-to.pdf, id=37, 560.0925pt x 421.575pt>
+File: pourccst-eps-converted-to.pdf Graphic file (type pdf)
+
+<use pourccst-eps-converted-to.pdf>
+Package pdftex.def Info: pourccst-eps-converted-to.pdf used on input line 266.
+(pdftex.def)             Requested size: 426.79134pt x 321.25587pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
 AED: lastpage setting LastPage
-[4] (./rapport.aux)
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: There were multiply-defined labels.
-
- ) 
+[4] [5 <./pourccst-eps-converted-to.pdf>] (./rapport.aux) ) 
 Here is how much of TeX's memory you used:
- 6107 strings out of 493488
- 84294 string characters out of 3141326
+ 6113 strings out of 493488
+ 84446 string characters out of 3141326
  169066 words of memory out of 3000000
- 9250 multiletter control sequences out of 15000+200000
+ 9255 multiletter control sequences out of 15000+200000
  66299 words of font info for 61 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 38i,8n,43p,803b,307s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/local/t
-exlive/2012/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/local/texlive/201
-2/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2012/texmf-dist/f
-onts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texlive/2012/texmf-dist/fonts/enc/d
-vips/lm/lm-ec.enc}</usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmb
-x12.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmcsc10.pfb><
-/usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/local
-/texlive/2012/texmf-dist/fonts/type1/public/lm/lmmi12.pfb></usr/local/texlive/2
-012/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/local/texlive/2012/texmf-d
-ist/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive/2012/texmf-dist/fonts/t
-ype1/public/lm/lmr8.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/
-lm/lmri12.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/urw/courier/ucrr8
-a.pfb>
-Output written on rapport.pdf (6 pages, 185514 bytes).
+ 38i,8n,43p,787b,307s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/usr/local/texlive/
+2012/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/local/texlive/2012/texmf-dist
+/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/local/texlive/2012/texmf-dist/fonts/enc
+/dvips/lm/lm-rm.enc}{/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/lm/lm-m
+athit.enc}{/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}</us
+r/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></usr/local/te
+xlive/2012/texmf-dist/fonts/type1/public/lm/lmcsc10.pfb></usr/local/texlive/201
+2/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/local/texlive/2012/texmf-di
+st/fonts/type1/public/lm/lmmi12.pfb></usr/local/texlive/2012/texmf-dist/fonts/t
+ype1/public/lm/lmmi8.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public
+/lm/lmr12.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmr8.pf
+b></usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmri12.pfb></usr/lo
+cal/texlive/2012/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb>
+Output written on rapport.pdf (7 pages, 190944 bytes).
 PDF statistics:
- 75 PDF objects out of 1000 (max. 8388607)
- 52 compressed objects within 1 object stream
+ 86 PDF objects out of 1000 (max. 8388607)
+ 60 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 21 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 26 words of extra memory for PDF output out of 10000 (max. 10000000)
 

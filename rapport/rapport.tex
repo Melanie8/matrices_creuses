@@ -148,7 +148,7 @@
 
 
 \subsection{Implémentation de base d'une matrice creuse}
-Nous avons choisi d'implémenter une matrice creuse à l'aide d'une structure de données contenant son nombre de lignes $n$, son nombre de colonnes $m$ et un tableau de files simplement chaînées pointers. Dans ce tableau, la $i^{ème}$ file représente la  $i^{ème}$ ligne de notre matrice et chaque noeud de la file représente un élément non-nul de cette ligne. Dans chaque noeud, nous stockons la valeur $v$ de l'élément (qui sont certes tous des $1$ au début comme stipulé dans l'énoncé mais peuvent être différents de 1 une fois qu'on commence à multiplier des matrices), la position $j$ de l'élément au sein de la ligne et un pointeur vers le noeud suivant.\\
+Nous avons choisi d'implémenter une matrice creuse à l'aide d'une structure de données contenant son nombre de lignes $n$, son nombre de colonnes $m$ et un tableau de files simplement chaînées pointers. Dans ce tableau, la $i^{ème}$ file représente la  $i^{ème}$ ligne de notre matrice et chaque noeud de la file représente un élément non nul de cette ligne. Dans chaque noeud, nous stockons la valeur $v$ de l'élément (qui sont certes tous des $1$ au début comme stipulé dans l'énoncé mais peuvent être différents de 1 une fois qu'on commence à multiplier des matrices), la position $j$ de l'élément au sein de la ligne et un pointeur vers le noeud suivant.\\
 
 Soit par exemple la matrice
 $$\begin{pmatrix}
@@ -175,7 +175,7 @@ Nous nous sommes ensuite rendu compte que nous pouvions rendre la multiplication
 	\begin{center}
 		\includegraphics[width=7cm]{encodage2.png}
 		\caption{Encodage d'une matrice creuse par colonnes}
-		\label{encodage}
+		\label{encodage2}
 	\end{center}
 \end{figure}
 
@@ -202,7 +202,7 @@ Il est intéressant d'analyser les performances de notre programme en comparaiso
 
 \subsection{Scénario 1 : variation du nombre d'éléments non nuls}
 
-Nous avons tout d'abord voulu analyser l'influence du nombre de zéros sur le temps d'exécution. Nous avons pour cela généré des fichiers contenant deux fois une même matrice $1000$x$1000$ avec respectivement $1$, $3$, $9$, $27$, $81$ ou $243$ nombres non nuls par ligne (des $1$ en l'occurrence) par lignes, décalés de un vers la droite d'une ligne à l'autre pour éviter d'avoir des colonnes vides. Autrement dit, notre premier fichier contenait  deux matrices identité de taille $1000$, notre deuxième fichier deux matrices de taille $1000$ aussi mais avec $3$ un sur chaque ligne, etc. Nous avons ensuite calculé le temps d'exécution de nos deux programmes pour lire les deux matrices d'un fichier, les multiplier, et écrire le résultat dans un fichier de sortie. 
+Nous avons tout d'abord voulu analyser l'influence du nombre d'éléments non nuls sur le temps d'exécution. Nous avons pour cela généré des fichiers contenant deux fois une même matrice $1000$x$1000$ avec respectivement $1$, $3$, $9$, $27$, $81$ ou $243$ éléments non nuls par ligne (des $1$ en l'occurrence), décalés d'une ligne à l'autre afin d'éviter d'avoir des colonnes vides. Autrement dit, notre premier fichier contenait deux matrices identité de taille $1000$, notre deuxième fichier deux matrices de taille $1000$ aussi mais avec $3$ un sur chaque ligne, etc. Nous avons ensuite calculé le temps d'exécution de nos deux programmes pour lire les deux matrices d'un fichier, les multiplier, et écrire le résultat dans un fichier de sortie. 
 
 \paragraph{Mesures}
 Afin d'éviter d'avoir des valeurs aberrantes, nous avons effectué 3 mesures dans chacune des situations. \\
@@ -223,7 +223,7 @@ Afin d'éviter d'avoir des valeurs aberrantes, nous avons effectué 3 mesures da
 
 
 \paragraph{Graphe}
-Nous avons ensuite tracé un graphe logarithmique de ces résultats en utilisant les moyennes de ces 3 mesures dans chacun des cas.
+Nous avons ensuite tracé un graphe logarithmique de ces résultats en utilisant les moyennes de ces 3 mesures dans chacun des cas (voir Figure~\ref{vnz}).
 \begin{figure}[!h]
 	\begin{center}
 		\includegraphics[width=15cm]{taillecst.eps}
@@ -236,9 +236,41 @@ Nous avons ensuite tracé un graphe logarithmique de ces résultats en utilisant
 
 On remarque tout d'abord que pour des matrices pleines, le temps d'exécution ne dépend pas du nombre d'éléments non nuls dans la matrice. Cela est tout à fait logique car on utilise un simple tableau qu'il faut de toutes façons parcourir dans son entièreté lorsqu'on veut le multiplier par une autre matrice. Pour des matrices creuses par contre, le nombre d'éléments non nuls a de l'influence car nos files vont alors avoir plus de noeuds qu'il va falloir parcourir pour effectuer un produit.\\
 
-On remarque ensuite que jusqu'à 2,7\% d'éléments non nuls, il était nettement plus avantageux (environ $7$ fois plus rapide) d'utiliser des matrices creuses tandis que lorsqu'il y en avait 8,1\%, c'était environ $2,5$ fois plus lent. Il n'est donc intéressant d'utiliser des matrices creuses que lorsqu'il y a plus d'environ 95\% de zéros dans nos matrices.
+On remarque ensuite que jusqu'à 2,7\% d'éléments non nuls, il était nettement plus avantageux (environ $7$ fois plus rapide) d'utiliser des matrices creuses tandis que lorsqu'il y en avait 8,1\%, c'était environ $2,5$ fois plus lent. Nous avons alors effectué d'autres tests afin de trouver à partir de quel pourcentage d'éléments nuls il est plus intéressant d'utiliser des matrices creuses et nous avons trouvé 93\%.
 
 \subsection{Scénario 2 : variation de la taille de la matrice}
+
+Nous avons ensuite voulu voir si, outre le pourcentage d'éléments non nuls dans la matrice, la taille de celle-ci pouvait avoir de l'influence. Nous avons donc choisi de travailler avec des matrices à 93\% nulles pour lesquelles on avait des temps d'exécutions semblables lorsqu'elles étaient de taille 1000 et avons voulu voir si une des deux implémentations était proportionnellement plus favorable dans le cas des petites ou des grandes matrices.
+
+\paragraph{Mesures}
+Nous avons généré des matrices carrées de taille 100, 200, 400, 800 et 1600 à 93\% nulles. De nouveau, afin d'éviter d'avoir des valeurs aberrantes, nous avons effectué 3 mesures dans chacune des situations. \\
+
+\begin{tabular}{|*{7}{c|}}
+    \hline
+       & 100  & 200  & 400  & 800  & 1600\\
+    \hline
+    \multirow{3}{*}{creuses}  & 0.007116  s & 0.049152  s & 0.526088  s & 7.161576  s & 111.793129 s\\
+    & 0.007053 s & 0.049568 s & 0.527764 s & 7.169523 s & 112.597748 s\\
+    & 0.007125  s & 0.049119 s &0.526721 s & 7.174552 s & 112.649086 s\\
+    \hline
+     \multirow{3}{*}{pleines} & 0.017462 s & 0.113815 s & 0.955724 s  &  8.053343 s & 75.238472 s\\
+    & 0.015019 s & 0.111238 s & 0.931406 s & 8.676009 s & 74.620865 s\\
+    & 0.015758 s & 0.115848 s & 0.950773 s & 8.642730 s & 74.007690 s\\
+    \hline
+\end{tabular}
+
+\paragraph{Graphe}
+Nous avons ensuite tracé le graphe (voir Figure~\ref{vtm}) du rapport entre le temps pris avec les matrices pleines et le temps pris avec les matrices creuses, en fonction de la taille de la matrice (échelle logarithmique).
+\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[width=15cm]{pourccst.eps}
+		\caption{Scénario 2 : variation de la taille de la matrice}
+		\label{vtm}
+	\end{center}
+\end{figure}
+
+\paragraph{Observations}
+Globalement, il est intéressant d'utiliser des matrices creuses lorsque les matrices ne sont pas trop grandes (et on remarque bien qu'on a égalité vers une taille de 1000 ce qui confirme ce que l'on avait dit au point précédent). Plus celles-ci seront grandes, plus il faudra qu'elles aient un grand pourcentage d'éléments nuls pour que cela devienne intéressant. 
 
 \subsection{Fichier de test fourni}
 
