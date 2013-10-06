@@ -273,6 +273,7 @@ Nous avons ensuite tracé le graphe (voir Figure~\ref{vtm}) du rapport entre le 
 Globalement, il est intéressant d'utiliser des matrices creuses lorsque les matrices ne sont pas trop grandes (et on remarque bien qu'on a égalité vers une taille de 1000 ce qui confirme ce que l'on avait dit au point précédent). Plus celles-ci seront grandes, plus il faudra qu'elles aient un grand pourcentage d'éléments nuls pour que cela devienne intéressant. 
 
 \subsection{Fichier de test fourni}
+Notre programme prend environ $86$ minutes pour multiplier les matrices du fichier de test fourni, versus $23$ minutes avec une implémentation basique de matrices pleines. Cela est dû au fait qu'après multiplications, on se retrouve avec des matrices de moins en moins creuses. Le résultat final de contient d'ailleurs plus aucun zéro.
 
 %\section{Performances}
 %\subsection{Fonctionnement}
